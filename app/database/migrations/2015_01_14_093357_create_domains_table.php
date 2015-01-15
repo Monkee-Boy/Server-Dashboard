@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateStorageTable extends Migration {
+class CreateDomainsTable extends Migration {
 
 	/**
 	 * Run the migrations.
@@ -12,14 +12,13 @@ class CreateStorageTable extends Migration {
 	 */
 	public function up()
 	{
-		Schema::create('storage', function(Blueprint $table)
+		Schema::create('domains', function(Blueprint $table)
 		{
 			$table->increments('id');
-			$table->integer('domain')->unsigned()->index();
-			$table->foreign('domain')->references('id')->on('domains');
-			$table->integer('size');
-			$table->integer('files');
+			$table->string('domain');
+			$table->string('subdomain');
 			$table->timestamps();
+			$table->softDeletes();
 		});
 	}
 
@@ -30,7 +29,7 @@ class CreateStorageTable extends Migration {
 	 */
 	public function down()
 	{
-		Schema::drop('storage');
+		Schema::drop('domains');
 	}
 
 }

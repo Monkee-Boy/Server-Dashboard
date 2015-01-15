@@ -14,8 +14,9 @@ class CreateBandwidthTable extends Migration {
 	{
 		Schema::create('bandwidth', function(Blueprint $table)
 		{
-			$table->increments('id');
-			$table->string('domain', 50);
+			$table->engine = 'InnoDB';
+			$table->integer('domain')->unsigned()->index();
+			$table->foreign('domain')->references('id')->on('domains');
 			$table->string('ip', 30);
 			$table->string('logname', 10);
 			$table->string('remote_user', 10);
