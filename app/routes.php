@@ -16,3 +16,5 @@ Route::get('/', 'HomeController@showWelcome');
 Route::get('domains', array('as'=>'domains', 'uses'=>'DomainsController@index'));
 Route::get('domains/{domain_name}', array('as'=>'domain', 'uses'=>'DomainsController@domain'));
 Route::get('domains/{domain_name}/{subdomain_name}', array('as'=>'subdomain', 'uses'=>'DomainsController@subdomain'));
+
+Route::resource('notifications', 'NotificationsController');

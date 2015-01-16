@@ -23,6 +23,7 @@
       <!-- Right Nav Section -->
       <ul class="right">
         <li class="has-form"><?= link_to_route('domains', 'Domains', array(), array('class'=>'button')); ?></li>
+        <li class="has-form"><?= link_to_route('notifications.index', 'Notifications', array(), array('class'=>'button')) ?></li>
         <li class="divider"></li>
         <li><a href="#">Logout</a></li>
       </ul>
