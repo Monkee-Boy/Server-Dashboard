@@ -5,7 +5,7 @@ mBoy Server Dashboard is an application for us to track client bandwidth and dis
 
 ## Setup
 
-Follow steps in `install.md`.
+Follow steps in [`install.md`](https://github.com/Monkee-Boy/Server-Dashboard/blob/master/install.md).
 
 ## The Troop
 
