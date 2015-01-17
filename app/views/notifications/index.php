@@ -24,10 +24,21 @@
   <tbody>
     <?php foreach($notifications as $notification) { ?>
       <tr>
-        <td>When <?php if($notification->how === 'reach') { echo 'server'; } else { echo 'domain'; } ?> <code><?= $notification->what ?></code> <code><?= $notification->how ?></code> by <code><?= $notification->by.$notification->by_measure ?></code> notify <code><?= $notification->where ?></code></td>
         <td>
-          <?= link_to_route('notifications.edit', 'Edit &bull;', $notification->id); ?>
-          <?= link_to_route('notifications.destroy', 'Remove', $notification->id); ?>
+          When <?php if($notification->how === 'reach') { echo 'server'; } else { echo 'domain'; } ?>
+          <code><?= $notification->what ?></code>
+          <code><?= $notification->how ?></code>
+          <?php if($notification->how !== 'reach') { echo ' by '; } ?>
+          <code><?= $notification->by.$notification->by_measure ?></code><?php if($notification->how === 'reach') { echo ' remaining'; } ?>, notify
+          <code><?= $notification->where ?></code>
+        </td>
+        <td>
+          <?= Form::open(array('route' => array('notifications.destroy', $notification->id), 'method' => 'DELETE')); ?>
+            <ul class="button-group radius">
+              <li><?= link_to_route('notifications.edit', 'Edit', $notification->id, array('class'=>'button tiny')); ?></li>
+              <li><button type="submit" class="alert tiny">Remove</button></li>
+            </ul>
+          <?= Form::close(); ?>
         </td>
       </tr>
     <?php } ?>

@@ -63,7 +63,8 @@ class NotificationsController extends \BaseController {
 	 */
 	public function edit($id)
 	{
-		//
+		$notification = Notification::find($id);
+		$this->layout->content = View::make('notifications.edit', array('notification' => $notification));
 	}
 
 
@@ -75,7 +76,25 @@ class NotificationsController extends \BaseController {
 	 */
 	public function update($id)
 	{
-		//
+		$rules = array(
+			'by' => 'required',
+			'where' => 'required'
+		);
+
+		$validator = Validator::make(Input::all(), $rules);
+		if ($validator->fails()) {
+			return Redirect::to('notifications.edit', $id)->withErrors($validator)->withInput(Input::all());
+		} else {
+			$notification = Notification::find($id);
+			$notification->what = Input::get('what');
+			$notification->how = Input::get('how');
+			$notification->by = Input::get('by');
+			$notification->by_measure = Input::get('by_measure');
+			$notification->where = Input::get('where');
+			$notification->save();
+			Session::flash('message', 'Successfully updated notification!');
+			return Redirect::to('notifications');
+		}
 	}
 
 
@@ -87,7 +106,9 @@ class NotificationsController extends \BaseController {
 	 */
 	public function destroy($id)
 	{
-		//
+		Notification::find($id)->delete();
+		Session::flash('message', 'Successfully removed notification!');
+		return Redirect::to('notifications');
 	}
 
 

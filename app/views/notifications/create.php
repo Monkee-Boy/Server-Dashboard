@@ -1,6 +1,6 @@
 <div class="row">
   <div class="large-8 columns">
-    <h1>Create Notifications</h1>
+    <h1>Create Notification</h1>
   </div>
 
   <div class="large-4 columns">
