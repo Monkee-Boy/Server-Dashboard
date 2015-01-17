@@ -6,7 +6,7 @@
 
   <title>mBoy Server Dashboard</title>
 
-  <link rel="stylesheet" href="/bower_components/foundation/css/foundation.css">
+  <link rel="stylesheet" href="/css/style.min.css?v=1">
   <script src="/bower_components/modernizr/modernizr.js"></script>
 </head>
 <body>
@@ -47,7 +47,10 @@
     </div> <!-- /.large-12.columns -->
   </div> <!-- /.row -->
 
-  <script src="/bower_components/jquery/dist/jquery.min.js"></script>
+  <script src="//code.jquery.com/jquery-2.1.1.min.js"></script>
+  <script>window.jQuery || document.write('<script src="/js/jquery.min.js"><\/script>')</script>
   <script src="/bower_components/foundation/js/foundation.min.js"></script>
+  <script src="/bower_components/Chart.js/Chart.min.js"></script>
+  <script src="/js/app.js?v=1"></script>
 </body>
 </html>
