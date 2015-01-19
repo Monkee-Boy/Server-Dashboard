@@ -9,7 +9,7 @@ class Bandwidth extends Eloquent {
   */
   protected $table = 'bandwidth';
 
-  protected $fillable = array('domain','ip','logname','remote_user','request_time','time_taken','request','status','size_response','bytes_received','bytes_sent','referer','user_agent');
+  protected $fillable = array('domain','ip','request_time','time_taken','method','status','size_response','bytes_received','bytes_sent','referer','user_agent','file_name','url');
 
   public function domain()
   {
