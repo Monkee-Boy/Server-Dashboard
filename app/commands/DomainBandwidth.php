@@ -83,11 +83,18 @@ class DomainBandwidth extends Command {
 
 		foreach($aData as $sRow)
 		{
-			$aRow = explode("  ", $sRow);
+			$aRow = explode("\t", $sRow);
+
+			if(count($aRow) <= 3)
+			{
+				$aRow = explode("  ", $sRow);
+			}
+
 			$aRow = $this->array_fill_keys($aKeys, $aRow);
 
 			// Ignore dummy connection
-			if($aRow['host'] !== '-') {
+			if($aRow['host'] !== '-')
+			{
 				// Data cleanup
 				$aRow['file_name'] = substr($aRow['file_name'], 1, -1);
 				$aRow['referer'] = substr($aRow['referer'], 1, -1);
@@ -104,7 +111,8 @@ class DomainBandwidth extends Command {
 				else
 				{
 					$aDomain = explode('.', $aRow['host']);
-					if(count($aDomain) > 1) {
+					if(count($aDomain) > 1)
+					{
 						$aDomain = array_reverse($aDomain);
 						$sDomain = $aDomain[1].'.'.$aDomain[0];
 
@@ -120,7 +128,9 @@ class DomainBandwidth extends Command {
 						{
 							$sSubDomain = "_";
 						}
-					} else {
+					}
+					else
+					{
 						$sDomain = $aRow['host'];
 						$sSubDomain = "_";
 					}
