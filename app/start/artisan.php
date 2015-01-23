@@ -12,3 +12,4 @@
 */
 
 Artisan::add(new DomainBandwidth);
+Artisan::add(new DomainStorage);
