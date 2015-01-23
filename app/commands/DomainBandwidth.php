@@ -73,7 +73,7 @@ class DomainBandwidth extends Command {
 		}
 		elseif(App::environment('production'))
 		{
-			$sData = file_get_contents("/var/www/.logs/access.log"); // Get the access.log file.
+			$sData = file_get_contents("/var/www/.logs/access.log.1"); // Get the access.log file.
 		}
 
 		$aKeys = array("ip", "time_taken", "file_name", "host", "referer", "user_agent", "bytes_received", "request_method", "bytes_sent", "status", "timestamp", "url");
