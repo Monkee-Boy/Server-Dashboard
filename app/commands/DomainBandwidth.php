@@ -102,7 +102,7 @@ class DomainBandwidth extends Command {
 			else
 			{
 				$aDomain = explode('.', $aRow['host']);
-				if($aDomain > 1) {
+				if(count($aDomain) > 1) {
 					$aDomain = array_reverse($aDomain);
 					$sDomain = $aDomain[1].'.'.$aDomain[0];
 
