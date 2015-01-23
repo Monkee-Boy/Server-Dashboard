@@ -94,9 +94,9 @@ class DomainBandwidth extends Command {
 			$aRow['url'] = substr($aRow['url'], 1, -1);
 
 			// Build domain and subdomain
-			if($aRow['host'] === '104.237.135.230')
+			if($aRow['host'] === $_SERVER['SERVER_ADDR'])
 			{
-				$sDomain = "104.237.135.230";
+				$sDomain = $_SERVER['SERVER_ADDR'];
 				$sSubDomain = "_";
 			}
 			else
