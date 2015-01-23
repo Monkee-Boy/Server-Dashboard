@@ -16,7 +16,7 @@
 
 <div class="row">
   <div class="large-12 columns">
-    #TODO: Add domain overview graphs
+    <div class="chartStock" width="100%" height="400px" data-chart-url="<?= route('chart_bandwidth_domain', array('domain_name'=>$domain_name)) ?>" data-chart-title="Bandwidth" data-yaxis-title="Kilobytes"></div>
   </div>
 </div>
 

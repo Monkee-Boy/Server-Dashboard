@@ -6,15 +6,21 @@ class BandwidthSeeder extends Seeder {
   {
     DB::table('bandwidth')->delete();
 
-    for($i=0; $i<1000; $i++) {
+    $period = new DatePeriod(
+      new DateTime('2011-01-20'),
+      new DateInterval('P1D'),
+      new DateTime('2012-10-05')
+    );
+
+    foreach($period as $time) {
       $domain = mt_rand(1,7);
-      $received = mt_rand(300,800);
-      $sent = mt_rand(300,800);
+      $received = mt_rand(300,8000);
+      $sent = mt_rand(300,8000);
 
       Bandwidth::create(array(
         'domain' => $domain,
         'ip' => '96.63.241.155',
-        'request_time' => '2011-01-24 22:48:58',
+        'request_time' => $time->format('Y-m-d H:i:s'),
         'time_taken' => rand(300,800),
         'method' => 'GET',
         'status' => '200',
