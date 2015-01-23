@@ -103,9 +103,9 @@ class DomainBandwidth extends Command {
 				$aRow['url'] = substr($aRow['url'], 1, -1);
 
 				// Build domain and subdomain
-				if($aRow['host'] === Request::server('SERVER_ADDR'))
+				if($aRow['host'] === '198.58.101.143')
 				{
-					$sDomain = Request::server('SERVER_ADDR');
+					$sDomain = '198.58.101.143';
 					$sSubDomain = "_";
 				}
 				else
