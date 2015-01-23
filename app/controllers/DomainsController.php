@@ -39,7 +39,8 @@ class DomainsController extends BaseController {
   */
   public function subdomain($domain_name, $subdomain_name)
   {
-    $subdomain = Domain::where('subdomain', $subdomain_name)
+    $subdomain = Domain::where('domain', $domain_name)
+      ->where('subdomain', $subdomain_name)
       ->first();
 
     $this->layout->content = View::make('domains.subdomain', array('subdomain'=>$subdomain));
