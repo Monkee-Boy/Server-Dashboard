@@ -86,78 +86,81 @@ class DomainBandwidth extends Command {
 			$aRow = explode("  ", $sRow);
 			$aRow = $this->array_fill_keys($aKeys, $aRow);
 
-			// Data cleanup
-			$aRow['file_name'] = substr($aRow['file_name'], 1, -1);
-			$aRow['referer'] = substr($aRow['referer'], 1, -1);
-			$aRow['user_agent'] = substr($aRow['user_agent'], 1, -1);
-			$aRow['timestamp'] = substr($aRow['timestamp'], 1, -1);
-			$aRow['url'] = substr($aRow['url'], 1, -1);
+			// Ignore dummy connection
+			if($aRow['host'] !== '-') {
+				// Data cleanup
+				$aRow['file_name'] = substr($aRow['file_name'], 1, -1);
+				$aRow['referer'] = substr($aRow['referer'], 1, -1);
+				$aRow['user_agent'] = substr($aRow['user_agent'], 1, -1);
+				$aRow['timestamp'] = substr($aRow['timestamp'], 1, -1);
+				$aRow['url'] = substr($aRow['url'], 1, -1);
 
-			// Build domain and subdomain
-			if($aRow['host'] === Request::server('SERVER_ADDR'))
-			{
-				$sDomain = Request::server('SERVER_ADDR');
-				$sSubDomain = "_";
-			}
-			else
-			{
-				$aDomain = explode('.', $aRow['host']);
-				if(count($aDomain) > 1) {
-					$aDomain = array_reverse($aDomain);
-					$sDomain = $aDomain[1].'.'.$aDomain[0];
-
-					if(count($aDomain) > 2)
-					{
-						$sSubDomain = $aDomain[2];
-						for($i=3;$i<count($aDomain);$i++)
-						{
-							$sSubDomain = $aDomain[$i].".".$sSubDomain;
-						}
-					}
-					else
-					{
-						$sSubDomain = "_";
-					}
-				} else {
-					$sDomain = $aRow['host'];
+				// Build domain and subdomain
+				if($aRow['host'] === Request::server('SERVER_ADDR'))
+				{
+					$sDomain = Request::server('SERVER_ADDR');
 					$sSubDomain = "_";
 				}
+				else
+				{
+					$aDomain = explode('.', $aRow['host']);
+					if(count($aDomain) > 1) {
+						$aDomain = array_reverse($aDomain);
+						$sDomain = $aDomain[1].'.'.$aDomain[0];
+
+						if(count($aDomain) > 2)
+						{
+							$sSubDomain = $aDomain[2];
+							for($i=3;$i<count($aDomain);$i++)
+							{
+								$sSubDomain = $aDomain[$i].".".$sSubDomain;
+							}
+						}
+						else
+						{
+							$sSubDomain = "_";
+						}
+					} else {
+						$sDomain = $aRow['host'];
+						$sSubDomain = "_";
+					}
+				}
+
+				// Find domain id, if not create it
+				$domain = Domain::firstOrCreate(array(
+					'domain' => $sDomain,
+					'subdomain' => $sSubDomain
+				));
+
+				if(App::environment('local'))
+				{
+					// Show data on local for debugging
+					echo "\n";
+					echo $domain->id."\n";
+					echo $sDomain."\n";
+					echo $sSubDomain."\n";
+					print_r($aRow);
+					echo "\n\n";
+				}
+
+				// Now insert data into bandwidth table
+				Bandwidth::create(array(
+					'domain' => $domain->id,
+					'ip' => $aRow['ip'],
+					'request_time' => $aRow['timestamp'],
+					'time_taken' => $aRow['time_taken'],
+					'method' => $aRow['request_method'],
+					'status' => $aRow['status'],
+					'bytes_received' => $aRow['bytes_received'],
+					'bytes_sent' => $aRow['bytes_sent'],
+					'referer' => $aRow['referer'],
+					'user_agent' => $aRow['user_agent'],
+					'file_name' => $aRow['file_name'],
+					'url' => $aRow['url']
+				));
+
+				$sInserted++;
 			}
-
-			// Find domain id, if not create it
-			$domain = Domain::firstOrCreate(array(
-				'domain' => $sDomain,
-				'subdomain' => $sSubDomain
-			));
-
-			if(App::environment('local'))
-			{
-				// Show data on local for debugging
-				echo "\n";
-				echo $domain->id."\n";
-				echo $sDomain."\n";
-				echo $sSubDomain."\n";
-				print_r($aRow);
-				echo "\n\n";
-			}
-
-			// Now insert data into bandwidth table
-			Bandwidth::create(array(
-				'domain' => $domain->id,
-				'ip' => $aRow['ip'],
-				'request_time' => $aRow['timestamp'],
-				'time_taken' => $aRow['time_taken'],
-				'method' => $aRow['request_method'],
-				'status' => $aRow['status'],
-				'bytes_received' => $aRow['bytes_received'],
-				'bytes_sent' => $aRow['bytes_sent'],
-				'referer' => $aRow['referer'],
-				'user_agent' => $aRow['user_agent'],
-				'file_name' => $aRow['file_name'],
-				'url' => $aRow['url']
-			));
-
-			$sInserted++;
 		}
 
 		echo $sInserted." rows of data have been imported to track bandwidth.\n";
