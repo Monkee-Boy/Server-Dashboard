@@ -102,19 +102,24 @@ class DomainBandwidth extends Command {
 			else
 			{
 				$aDomain = explode('.', $aRow['host']);
-				$aDomain = array_reverse($aDomain);
-				$sDomain = $aDomain[1].'.'.$aDomain[0];
+				if($aDomain > 1) {
+					$aDomain = array_reverse($aDomain);
+					$sDomain = $aDomain[1].'.'.$aDomain[0];
 
-				if(count($aDomain) > 2)
-				{
-					$sSubDomain = $aDomain[2];
-					for($i=3;$i<count($aDomain);$i++)
+					if(count($aDomain) > 2)
 					{
-						$sSubDomain = $aDomain[$i].".".$sSubDomain;
+						$sSubDomain = $aDomain[2];
+						for($i=3;$i<count($aDomain);$i++)
+						{
+							$sSubDomain = $aDomain[$i].".".$sSubDomain;
+						}
 					}
-				}
-				else
-				{
+					else
+					{
+						$sSubDomain = "_";
+					}
+				} else {
+					$sDomain = $aRow['host'];
 					$sSubDomain = "_";
 				}
 			}
