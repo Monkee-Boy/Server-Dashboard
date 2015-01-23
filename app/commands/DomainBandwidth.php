@@ -39,7 +39,7 @@ class DomainBandwidth extends Command {
 	{
 		/**
 		 * Apache expected log format.
-		 * %a  %D  \"%f\" %{Host}i  \"%{Referer}i\"  \"%{User-Agent}i\" %I  %m  %O  \"%r\"  %>s  \"%{%F %T}t\"  \"%U\"
+		 * %a  %D  \"%f\" %{Host}i  \"%{Referer}i\"  \"%{User-Agent}i\" %I  %m  %O  %>s  \"%{%F %T}t\"  \"%U\"
 		 *
 		 * Log definitions.
 		 *   %a	- Remote IP-address
