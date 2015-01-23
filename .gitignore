@@ -7,3 +7,6 @@ composer.lock
 .DS_Store
 Thumbs.db
 /public/bower_components
+/config
+Capfile
+.capistrano
