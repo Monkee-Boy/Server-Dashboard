@@ -30,7 +30,8 @@ Route::group(['before' => 'auth'], function()
   Route::group(array('prefix' => 'domains'), function()
   {
     Route::get('/', ['as'=>'domains', 'uses'=>'DomainsController@index']);
-    Route::get('{domain_name}/{subdomain_name?}', ['as'=>'subdomain', 'uses'=>'DomainsController@subdomain']);
+    Route::get('{domain_name}', ['as'=>'domain', 'uses'=>'DomainsController@domain']);
+    Route::get('{domain_name}/{subdomain_name}', ['as'=>'subdomain', 'uses'=>'DomainsController@subdomain']);
   });
 
 
@@ -43,8 +44,7 @@ Route::group(['before' => 'auth'], function()
   {
     Route::group(array('prefix' => 'bandwidth'), function()
     {
-      Route::get('over_time/{domain_name}', ['as'=>'chart_bandwidth_domain', 'uses'=>'BandwidthController@over_time']);
-      Route::get('over_time/{domain_name}/{subdomain_name}', ['as'=>'chart_bandwidth_domain', 'uses'=>'BandwidthController@over_time']);
+      Route::get('over_time/{domain_name}/{subdomain_name?}', ['as'=>'chart_bandwidth_domain', 'uses'=>'BandwidthController@over_time']);
     });
   });
 });
