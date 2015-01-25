@@ -13,10 +13,10 @@
 
 Route::filter('not_auth', function()
 {
-    // if(Auth::check())
-    // {
-    //   return Redirect::to('/');
-    // }
+    if(Auth::check())
+    {
+      return Redirect::to('/');
+    }
 });
 
 Route::any('login', ['as'=>'user/login','before'=>'not_auth','uses'=>'UserController@login']);
