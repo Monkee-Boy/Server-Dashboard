@@ -11,28 +11,44 @@
 |
 */
 
-Route::get('/', 'HomeController@showWelcome');
-
-# Viewing domains
-Route::group(array('prefix' => 'domains'), function()
+Route::filter('not_auth', function()
 {
-  Route::get('/', array('as'=>'domains', 'uses'=>'DomainsController@index'));
-  Route::get('{domain_name}', array('as'=>'domain', 'uses'=>'DomainsController@domain'));
-  Route::get('{domain_name}/{subdomain_name}', array('as'=>'subdomain', 'uses'=>'DomainsController@subdomain'));
+    // if(Auth::check())
+    // {
+    //   return Redirect::to('/');
+    // }
 });
 
+Route::any('login', ['as'=>'user/login','before'=>'not_auth','uses'=>'UserController@login']);
 
-# Notifications
-Route::resource('notifications', 'NotificationsController');
-
-# Get chart data
-## Bandwidth
-
-Route::group(array('prefix' => 'charts'), function()
+Route::group(['before' => 'auth'], function()
 {
-  Route::group(array('prefix' => 'bandwidth'), function()
+  Route::get('/', 'HomeController@showWelcome');
+  Route::any('logout', ['as'=>'user/logout', 'uses'=>'UserController@logout']);
+
+  # Viewing domains
+  Route::group(array('prefix' => 'domains'), function()
   {
-    Route::get('over_time/{domain_name}', array('as'=>'chart_bandwidth_domain', 'uses'=>'BandwidthController@over_time'));
-    Route::get('over_time/{domain_name}/{subdomain_name}', array('as'=>'chart_bandwidth_domain', 'uses'=>'BandwidthController@over_time'));
+    Route::get('/', ['as'=>'domains', 'uses'=>'DomainsController@index']);
+    Route::get('{domain_name}/{subdomain_name?}', ['as'=>'subdomain', 'uses'=>'DomainsController@subdomain']);
+  });
+
+
+  # Notifications
+  Route::resource('notifications', 'NotificationsController');
+
+  # Get chart data
+  ## Bandwidth
+  Route::group(array('prefix' => 'charts'), function()
+  {
+    Route::group(array('prefix' => 'bandwidth'), function()
+    {
+      Route::get('over_time/{domain_name}', ['as'=>'chart_bandwidth_domain', 'uses'=>'BandwidthController@over_time']);
+      Route::get('over_time/{domain_name}/{subdomain_name}', ['as'=>'chart_bandwidth_domain', 'uses'=>'BandwidthController@over_time']);
+    });
   });
 });
+
+# User
+Route::any('request', ['as'=>'user/request', 'uses'=>'UserController@request']);
+Route::any('reset/{token}', ['as'=>'user/reset', 'uses'=>'UserController@reset']);

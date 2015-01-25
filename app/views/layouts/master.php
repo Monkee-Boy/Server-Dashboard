@@ -20,13 +20,15 @@
     </ul>
 
     <section class="top-bar-section">
-      <!-- Right Nav Section -->
-      <ul class="right">
-        <li class="has-form"><?= link_to_route('domains', 'Domains', array(), array('class'=>'button')); ?></li>
-        <li class="has-form"><?= link_to_route('notifications.index', 'Notifications', array(), array('class'=>'button')) ?></li>
-        <li class="divider"></li>
-        <li><a href="#">Logout</a></li>
-      </ul>
+      <?php if(Auth::check()) { ?>
+        <!-- Right Nav Section -->
+        <ul class="right">
+          <li class="has-form"><?= link_to_route('domains', 'Domains', array(), array('class'=>'button')) ?></li>
+          <li class="has-form"><?= link_to_route('notifications.index', 'Notifications', array(), array('class'=>'button')) ?></li>
+          <li class="divider"></li>
+          <li><?= link_to_route('user/logout', 'Logout') ?></li>
+        </ul>
+      <?php } ?>
     </section>
   </nav>
 
