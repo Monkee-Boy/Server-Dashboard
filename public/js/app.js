@@ -2,6 +2,8 @@
   // Line Charts
   $('.chartStock').each(function() {
     var chart = $(this);
+    chart.addClass('loading');
+
     $.getJSON(chart.data('chart-url'), function (data) {
       console.log(chart.data('yaxis-title'));
       // Create the chart
@@ -27,6 +29,7 @@
         },
         series : data
       });
+      chart.removeClass('loading');
     });
   });
 
@@ -77,6 +80,8 @@
   };
   $('.chartGuage').each(function() {
     var chart = $(this);
+    chart.addClass('loading');
+
     $.getJSON(chart.data('chart-url'), function (data) {
       chart.highcharts(Highcharts.merge(gaugeOptions, {
         title: {
@@ -103,14 +108,19 @@
         }]
 
       }));
+      chart.removeClass('loading');
     });
   });
 
   $('.chartProgress').each(function() {
     var chart = $(this);
+    chart.addClass('loading');
+
     $.getJSON(chart.data('chart-url'), function (data) {
       var dom = $('<h5>'+chart.data('chart-title')+'</h5><div class="progress round"><span class="meter" style="width:'+data.percentage+'%;"></div>');
       chart.append(dom);
+
+      chart.removeClass('loading');
     });
   });
 }(jQuery));

@@ -4,6 +4,7 @@ class LinodeController extends BaseController {
 
   public function progress()
   {
+    sleep(10);
     $total_days = date('t');
     $today = date('j');
     $difference = $total_days - $today;
@@ -23,6 +24,7 @@ class LinodeController extends BaseController {
   */
   public function bandwidth()
   {
+    sleep(10);
     $request = $this->call_linode('account.info');
 
     $value = $request['DATA']['TRANSFER_USED'];
@@ -49,6 +51,7 @@ class LinodeController extends BaseController {
 
   public function storage()
   {
+    sleep(10);
     $request = $this->call_linode('linode.disk.list', array('LinodeID'=>828311,'DiskID'=>2821695));
 
     $disk_total = disk_total_space('/');

@@ -23,12 +23,6 @@
 
 <div class="row">
   <div class="large-12 columns">
-    <div class="chartStock" width="100%" height="400px" data-chart-url="<?= route('chart_time_domain', array('domain_name'=>$domain_name)) ?>" data-chart-title="Request Time" data-yaxis-title="Seconds"></div>
-  </div>
-</div>
-
-<div class="row">
-  <div class="large-12 columns">
-    #TODO: Add subdomain overview graphs
+    <div class="chartStock" width="100%" height="400px" data-chart-url="<?= route('chart_time_domain', array('domain_name'=>$subdomain->domain, 'subdomain_name'=>$subdomain->subdomain)) ?>" data-chart-title="Request Time" data-yaxis-title="Seconds"></div>
   </div>
 </div>
