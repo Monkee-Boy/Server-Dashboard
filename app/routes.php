@@ -50,9 +50,10 @@ Route::group(['before' => 'auth'], function()
     });
 
     ## Bandwidth
-    Route::group(array('prefix' => 'bandwidth'), function()
+    Route::group(array('prefix' => 'over_time'), function()
     {
-      Route::get('over_time/{domain_name}/{subdomain_name?}', ['as'=>'chart_bandwidth_domain', 'uses'=>'BandwidthController@over_time']);
+      Route::get('bandwidth/{domain_name}/{subdomain_name?}', ['as'=>'chart_bandwidth_domain', 'uses'=>'OvertimeController@bandwidth']);
+      Route::get('time_taken/{domain_name}/{subdomain_name?}', ['as'=>'chart_time_domain', 'uses'=>'OvertimeController@time_taken']);
     });
   });
 });
