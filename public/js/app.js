@@ -9,12 +9,20 @@
         rangeSelector : {
           selected : 1
         },
+        legend: {
+          enabled: true
+        },
         title : {
           text : chart.data('chart-title')
         },
         yAxis : {
           title: {
             text: chart.data('yaxis-title')
+          }
+        },
+        plotOptions: {
+          series: {
+            xDateFormat: '%A, %b %e'
           }
         },
         series : data
