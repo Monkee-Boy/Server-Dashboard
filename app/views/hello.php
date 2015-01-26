@@ -10,7 +10,7 @@
 
 <div class="row">
 	<div class="large-12 columns">
-		#TODO: Insert billing cycle progress bar here.
+		<div class="chartProgress" data-chart-url="<?= route('linode_progress') ?>" data-chart-title="Billing Cycle"></div>
 	</div>
 </div>
 

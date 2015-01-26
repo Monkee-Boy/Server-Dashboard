@@ -44,6 +44,7 @@ Route::group(['before' => 'auth'], function()
     ## Linode
     Route::group(array('prefix' => 'linode'), function()
     {
+      Route::get('progress', ['as'=>'linode_progress', 'uses'=>'LinodeController@progress']);
       Route::get('bandwidth', ['as'=>'linode_bandwidth', 'uses'=>'LinodeController@bandwidth']);
       Route::get('storage', ['as'=>'linode_storage', 'uses'=>'LinodeController@storage']);
     });

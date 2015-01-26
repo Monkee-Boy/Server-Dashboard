@@ -105,4 +105,12 @@
       }));
     });
   });
+
+  $('.chartProgress').each(function() {
+    var chart = $(this);
+    $.getJSON(chart.data('chart-url'), function (data) {
+      var dom = $('<h5>'+chart.data('chart-title')+'</h5><div class="progress round"><span class="meter" style="width:'+data.percentage+'%;"></div>');
+      chart.append(dom);
+    });
+  });
 }(jQuery));

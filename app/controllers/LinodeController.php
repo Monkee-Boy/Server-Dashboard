@@ -1,6 +1,21 @@
 <?php
 
 class LinodeController extends BaseController {
+
+  public function progress()
+  {
+    $total_days = date('t');
+    $today = date('j');
+    $difference = $total_days - $today;
+
+    $data = [
+      'days' => $difference,
+      'percentage' => round(($today/$total_days) * 100, 2)
+    ];
+
+    return Response::json($data, 200);
+  }
+
   /**
   * Display a listing of the resource.
   *
