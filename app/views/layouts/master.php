@@ -53,6 +53,8 @@
   <script>window.jQuery || document.write('<script src="/js/jquery.min.js"><\/script>')</script>
   <script src="/bower_components/foundation/js/foundation.min.js"></script>
   <script src="/bower_components/highstock/highstock.js"></script>
+  <script src="/bower_components/highstock/highcharts-more.js"></script>
+  <script src="/bower_components/highstock/modules/solid-gauge.js"></script>
   <script src="/bower_components/highstock/modules/exporting.js"></script>
   <script src="/js/app.js?v=1"></script>
 </body>

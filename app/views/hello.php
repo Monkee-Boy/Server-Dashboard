@@ -10,13 +10,15 @@
 
 <div class="row">
 	<div class="large-12 columns">
-		#TODO: Add landing page graphs.<br>
-		<br>
-		Graphs<br>
-		<ul>
-			<li>Use server API to know amount of bandwidth used and amount remaining. (pie chart)</li>
-			<li>Show remaining time in billing cycle. (progress bar)</li>
-			<li>Chart of disk space. (pie chart)</li>
-		</ul>
+		#TODO: Insert billing cycle progress bar here.
+	</div>
+</div>
+
+<div class="row">
+	<div class="large-6 columns">
+		<div class="chartGuage" data-chart-url="<?= route('linode_bandwidth') ?>" data-chart-title="Bandwidth Used" style="width:100%;height:245px;"></div>
+	</div>
+	<div class="large-6 columns">
+		<div class="chartGuage" data-chart-url="<?= route('linode_storage') ?>" data-chart-title="Storage Used" style="width:100%;height:245px;"></div>
 	</div>
 </div>

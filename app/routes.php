@@ -39,9 +39,16 @@ Route::group(['before' => 'auth'], function()
   Route::resource('notifications', 'NotificationsController');
 
   # Get chart data
-  ## Bandwidth
   Route::group(array('prefix' => 'charts'), function()
   {
+    ## Linode
+    Route::group(array('prefix' => 'linode'), function()
+    {
+      Route::get('bandwidth', ['as'=>'linode_bandwidth', 'uses'=>'LinodeController@bandwidth']);
+      Route::get('storage', ['as'=>'linode_storage', 'uses'=>'LinodeController@storage']);
+    });
+
+    ## Bandwidth
     Route::group(array('prefix' => 'bandwidth'), function()
     {
       Route::get('over_time/{domain_name}/{subdomain_name?}', ['as'=>'chart_bandwidth_domain', 'uses'=>'BandwidthController@over_time']);
