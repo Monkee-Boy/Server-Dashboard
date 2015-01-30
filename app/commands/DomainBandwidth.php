@@ -65,7 +65,7 @@ class DomainBandwidth extends Command {
 
 			$sData .= "70.112.137.185  326  \"/var/www/notbatman.com/_/public_html/js/plugins.js\"  notbatman.com  \"http://notbatman.com/\"  \"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.95 Safari/537.36\"  646  GET  810  200  \"2015-01-18 21:00:58\"  \"/js/plugins.js\"\n";
 
-			$sData .= "70.112.137.185  835  \"/var/www/notbatman.com/_/public_html/js/modernizr-2.0.6.min.js\"  something.another.notbatman.com  \"http://notbatman.com/\"  \"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.95 Safari/537.36\"  659  GET  7001  200  \"2015-01-18 21:00:58\"  \"/js/modernizr-2.0.6.min.js\"\n";
+			$sData .= "70.112.137.185  835  \"/var/www/notbatman.com/_/public_html/js/modernizr-2.0.6.min.js\"  something.another.notbatman.com:80  \"http://notbatman.com/\"  \"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.95 Safari/537.36\"  659  GET  7001  200  \"2015-01-18 21:00:58\"  \"/js/modernizr-2.0.6.min.js\"\n";
 
 			$sData .= "70.112.137.185  4669  \"/var/www/notbatman.com/_/public_html/js/jquery-1.7.1.min.js\"  notbatman.com  \"http://notbatman.com/\"  \"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.95 Safari/537.36\"  657  GET  33448  200  \"2015-01-18 21:00:58\"  \"/js/jquery-1.7.1.min.js\"\n";
 
@@ -110,7 +110,8 @@ class DomainBandwidth extends Command {
 				}
 				else
 				{
-					$aDomain = explode('.', $aRow['host']);
+					$aDomain = explode(':', $aRow['host']);
+					$aDomain = explode('.', $aDomain[0]);
 					if(count($aDomain) > 1)
 					{
 						$aDomain = array_reverse($aDomain);
