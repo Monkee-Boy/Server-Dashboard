@@ -19,4 +19,31 @@ class BaseController extends Controller {
 		}
 	}
 
+	protected function convertBytes($bytes) {
+		if($bytes >= 1099511627776)
+		{
+			return round($bytes/1099511627776,2).' TB';
+		}
+		elseif($bytes >= 1073741824)
+		{
+			return round($bytes/1073741824,2).' GB';
+		}
+		elseif($bytes >= 1048576)
+		{
+			return round($bytes/1048576,2).' MB';
+		}
+		elseif($bytes >= 1024)
+		{
+			return round($bytes/1024,2).' KB';
+		}
+		elseif($bytes > 0)
+		{
+			return $bytes.' B';
+		}
+		else
+		{
+			return '';
+		}
+	}
+
 }

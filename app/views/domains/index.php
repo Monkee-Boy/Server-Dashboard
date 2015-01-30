@@ -17,7 +17,8 @@
   <thead>
     <tr>
       <th>Domain</th>
-      <th>Subdomains</th>
+      <th>Bandwidth <a href="#">?</a></th>
+      <th>Storage</th>
     </tr>
   </thead>
 
@@ -25,7 +26,8 @@
     <?php foreach($domains as $domain) { ?>
       <tr>
         <td><?= link_to_route('domain', $domain->domain, $domain->domain); ?></td>
-        <td><?= $domain->subdomains ?></td>
+        <td><?= $domain->bandwidth ?></td>
+        <td></td>
       </tr>
     <?php } ?>
   </tbody>
