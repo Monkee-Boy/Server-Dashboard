@@ -30,7 +30,7 @@
   <thead>
     <tr>
       <th>Subdomain</th>
-      <th>Bandwidth <a href="#">?</a></th>
+      <th>Bandwidth <span data-tooltip aria-haspopup="true" class="has-tip" title="Sum of bandwidth sent and received in the last 30 days.">?</span></th>
       <th>Storage</th>
     </tr>
   </thead>

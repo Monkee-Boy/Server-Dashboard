@@ -123,4 +123,6 @@
       chart.removeClass('loading');
     });
   });
+
+  $(document).foundation();
 }(jQuery));
