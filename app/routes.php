@@ -55,6 +55,13 @@ Route::group(['before' => 'auth'], function()
       Route::get('bandwidth/{domain_name}/{subdomain_name?}', ['as'=>'chart_bandwidth_domain', 'uses'=>'OvertimeController@bandwidth']);
       Route::get('time_taken/{domain_name}/{subdomain_name?}', ['as'=>'chart_time_domain', 'uses'=>'OvertimeController@time_taken']);
     });
+
+    ## Top
+    Route::group(['prefix' => 'top'], function()
+    {
+      Route::get('referers/{domain_name}/{subdomain_name?}', ['as'=>'chart_top_referers', 'uses'=>'TopController@referers']);
+      Route::get('pages/{domain_name}/{subdomain_name?}', ['as'=>'chart_top_pages', 'uses'=>'TopController@pages']);
+    });
   });
 });
 

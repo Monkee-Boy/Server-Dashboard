@@ -17,6 +17,7 @@
 
 <ul class="tabs" data-tab>
   <li class="tab-title active"><a href="#panel1">Over Time</a></li>
+  <li class="tab-title"><a href="#panel2">Top</a></li>
   <li class="tab-title"><a href="#panel3">Query Builder</a></li>
 </ul>
 
@@ -36,7 +37,37 @@
       </div>
     </div>
   </div>
+
   <div class="content" id="panel2">
+    <div class="row">
+      <div class="large-6 columns">
+        <h5>Top Referers <span data-tooltip aria-haspopup="true" class="has-tip" title="Top 10 referers in the last 30 days.">?</span></h5>
+        <table class="chartTable" data-chart-url="<?= route('chart_top_referers', array('domain_name'=>$subdomain->domain, 'subdomain_name'=>$subdomain->subdomain)) ?>" style="width: 100%;">
+          <thead>
+            <tr>
+              <th>Hits</th>
+              <th>Referer</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </div> <!-- /.large-6.columns -->
+
+      <div class="large-6 columns">
+        <h5>Top Pages <span data-tooltip aria-haspopup="true" class="has-tip" title="Top 10 pages requested in the last 30 days.">?</span></h5>
+        <table class="chartTable" data-chart-url="<?= route('chart_top_pages', array('domain_name'=>$subdomain->domain, 'subdomain_name'=>$subdomain->subdomain)) ?>" style="width: 100%;">
+          <thead>
+            <tr>
+              <th>Hits</th>
+              <th>Page</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </div> <!-- /.large-6.columns -->
+    </div> <!-- /.row -->
+  </div> <!-- /.content -->
+  <div class="content" id="panel3">
     #TODO: Add query builder.
   </div>
 </div>

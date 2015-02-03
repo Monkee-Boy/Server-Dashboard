@@ -16,8 +16,9 @@
 
 <ul class="tabs" data-tab>
   <li class="tab-title active"><a href="#panel1">Over Time</a></li>
-  <li class="tab-title"><a href="#panel2">Subdomains</a></li>
-  <li class="tab-title"><a href="#panel3">Query Builder</a></li>
+  <li class="tab-title"><a href="#panel2">Top</a></li>
+  <li class="tab-title"><a href="#panel3">Subdomains</a></li>
+  <li class="tab-title"><a href="#panel4">Query Builder</a></li>
 </ul>
 
 <hr>
@@ -27,16 +28,47 @@
     <div class="row">
       <div class="large-12 columns">
         <div class="chartStock" width="100%" height="400px" data-chart-url="<?= route('chart_bandwidth_domain', array('domain_name'=>$domain_name)) ?>" data-chart-title="Bandwidth" data-yaxis-title="Kilobytes"></div>
-      </div>
-    </div>
+      </div> <!-- /.large-12.columns -->
+    </div> <!-- /.row -->
 
     <div class="row">
       <div class="large-12 columns">
         <div class="chartStock" width="100%" height="400px" data-chart-url="<?= route('chart_time_domain', array('domain_name'=>$domain_name)) ?>" data-chart-title="Request Time" data-yaxis-title="Seconds"></div>
-      </div>
-    </div>
-  </div>
+      </div> <!-- /.large-12.columns -->
+    </div> <!-- /.row -->
+  </div> <!-- /.content.active -->
+
   <div class="content" id="panel2">
+    <div class="row">
+      <div class="large-6 columns">
+        <h5>Top Referers <span data-tooltip aria-haspopup="true" class="has-tip" title="Top 10 referers in the last 30 days.">?</span></h5>
+        <table class="chartTable" data-chart-url="<?= route('chart_top_referers', array('domain_name'=>$domain_name)) ?>" style="width: 100%;">
+          <thead>
+            <tr>
+              <th>Hits</th>
+              <th>Referer</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </div> <!-- /.large-6.columns -->
+
+      <div class="large-6 columns">
+        <h5>Top Pages <span data-tooltip aria-haspopup="true" class="has-tip" title="Top 10 pages requested in the last 30 days.">?</span></h5>
+        <table class="chartTable" data-chart-url="<?= route('chart_top_pages', array('domain_name'=>$domain_name)) ?>" style="width: 100%;">
+          <thead>
+            <tr>
+              <th>Hits</th>
+              <th>Page</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </div> <!-- /.large-6.columns -->
+    </div> <!-- /.row -->
+  </div> <!-- /.content -->
+
+  <div class="content" id="panel3">
     <table style="width: 100%;">
       <thead>
         <tr>
@@ -57,7 +89,7 @@
       </tbody>
     </table>
   </div>
-  <div class="content" id="panel3">
+  <div class="content" id="panel4">
     #TODO: Add query builder.
   </div>
 </div>

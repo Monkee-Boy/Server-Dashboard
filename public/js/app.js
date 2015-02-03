@@ -124,5 +124,24 @@
     });
   });
 
+  $('.chartTable').each(function() {
+    var chart = $(this);
+    chart.parent().addClass('loading');
+
+    $.getJSON(chart.data('chart-url'), function(data) {
+      if(data.chart) {
+        $.each(data.chart, function(index, row) {
+          var row_dom = $('<tr></tr>');
+          $.each(row, function(i, data) {
+            row_dom.append('<td>'+data+'</td>');
+          });
+          chart.find('tbody').append(row_dom);
+        });
+      }
+
+      chart.parent().removeClass('loading');
+    });
+  });
+
   $(document).foundation();
 }(jQuery));
