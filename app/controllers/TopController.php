@@ -9,16 +9,16 @@ class TopController extends BaseController {
   {
     $cache_key = 'top_referers_'.$domain_name.'_'.$subdomain_name;
 
-    // if (Cache::has($cache_key))
-    // {
-      // $aChartData = Cache::get($cache_key);
-      // $aData = [
-        // 'chart' => $aChartData,
-        // 'cache' => true
-      // ];
-    // }
-    // else
-    // {
+    if (Cache::has($cache_key))
+    {
+      $aChartData = Cache::get($cache_key);
+      $aData = [
+        'chart' => $aChartData,
+        'cache' => true
+      ];
+    }
+    else
+    {
       $oReferers = Bandwidth::select(DB::raw('count(*) as total'), 'referer')
       ->whereHas('domain', function($q) use ($domain_name)
       {
@@ -50,7 +50,7 @@ class TopController extends BaseController {
         'chart' => $aChartData,
         'cache' => false
       ];
-    // }
+    }
 
     return Response::json($aData, 200);
   }
@@ -59,16 +59,16 @@ class TopController extends BaseController {
   {
     $cache_key = 'top_pages_'.$domain_name.'_'.$subdomain_name;
 
-    // if (Cache::has($cache_key))
-    // {
-      // $aChartData = Cache::get($cache_key);
-      // $aData = [
-        // 'chart' => $aChartData,
-        // 'cache' => true
-        // ];
-    // }
-    // else
-    // {
+    if (Cache::has($cache_key))
+    {
+      $aChartData = Cache::get($cache_key);
+      $aData = [
+        'chart' => $aChartData,
+        'cache' => true
+        ];
+    }
+    else
+    {
       $oPages = Bandwidth::select(DB::raw('count(*) as total'), 'url')
       ->whereHas('domain', function($q) use ($domain_name)
       {
@@ -100,7 +100,7 @@ class TopController extends BaseController {
         'chart' => $aChartData,
         'cache' => false
       ];
-    // }
+    }
 
     return Response::json($aData, 200);
   }
