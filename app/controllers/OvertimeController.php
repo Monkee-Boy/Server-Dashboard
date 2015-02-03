@@ -53,7 +53,7 @@ class OvertimeController extends BaseController {
 
   public function time_taken($domain_name, $subdomain_name = null)
   {
-    $oRequest = Bandwidth::select('request_time', DB::raw('avg(time_taken) as avg_time_taken'), DB::raw('max(time_taken) as max_time_taken'))
+    $oRequest = Bandwidth::select('request_time', DB::raw('avg(time_taken) as avg_time_taken'))
     ->whereHas('domain', function($q) use ($domain_name)
     {
       $q->where('domain', $domain_name);
@@ -78,22 +78,13 @@ class OvertimeController extends BaseController {
         'valueSuffix' => ' Sec'
       )
     );
-    $aMax = array(
-      'name' => 'Max',
-      'data' => array(),
-      'tooltip' => array(
-        'valueDecimals' => 2,
-        'valueSuffix' => ' Sec'
-      )
-    );
 
     foreach($aRequest as $aRow) {
       $date = new DateTime($aRow['request_time']);
 
       $aAvg['data'][] = array((int)$date->format('U')*1000, (float)$aRow['avg_time_taken']/1000);
-      $aMax['data'][] = array((int)$date->format('U')*1000, (float)$aRow['max_time_taken']/1000);
     }
 
-    return Response::json(array($aAvg, $aMax), 200);
+    return Response::json(array($aAvg), 200);
   }
 }
