@@ -60,7 +60,7 @@ class DomainsController extends BaseController {
         ->where(DB::raw('date(request_time)'), '>=', DB::raw('date(now()-interval 30 day)'))
         ->first();
 
-      $domains[$key]['bandwidth'] = $this->convertBytes($bandwidth->total_bytes);
+      $domains[$key]['bandwidth'] = (!empty($bandwidth))?$this->convertBytes($bandwidth->total_bytes):null;
     }
 
     $this->layout->content = View::make('domains.index', array('domains' => $domains));
@@ -124,7 +124,7 @@ class DomainsController extends BaseController {
         ->groupBy('domain')
         ->first();
 
-      $subdomains[$key]['bandwidth'] = $this->convertBytes($bandwidth->total_bytes);
+      $subdomains[$key]['bandwidth'] = (!empty($bandwidth))?$this->convertBytes($bandwidth->total_bytes):null;
     }
 
     $this->layout->content = View::make('domains.domain', array('domain_name' => $domain_name, 'subdomains' => $subdomains));
