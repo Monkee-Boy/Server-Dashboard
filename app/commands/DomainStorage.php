@@ -169,6 +169,9 @@ class DomainStorage extends Command {
 			}
 			else
 			{
+				// Sets size if folder may be empty
+				$size = 0;
+
 				if(!is_link($path))
 				{
 					if(is_dir($path))
@@ -187,7 +190,7 @@ class DomainStorage extends Command {
 				else
 				{
 					// This is counted somewhere else and shouldn't be double counted
-					return 0;
+					$size = 0;
 				}
 			}
 		}
