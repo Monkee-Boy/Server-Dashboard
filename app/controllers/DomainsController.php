@@ -7,60 +7,73 @@ class DomainsController extends BaseController {
   */
   public function index()
   {
-    $domains = Domain::select('domain', DB::raw('count(*) as `subdomains`'))
-      ->groupBy('domain')
-      ->orderBy('domain')
-      ->get();
+    $cache_key = "domains_index";
 
-    // Get filter domain list
-    if(App::environment('local'))
+    if(Cache::has($cache_key))
     {
-      $aFilterDomains = array(
-        'notbatman.com',
-        'defvayne23.com'
-      );
+      $domains = Cache::get($cache_key);
     }
-    elseif(App::environment('production'))
+    else
     {
-      $aFilterDomains = scandir('/var/www/');
+      $domains = Domain::select('domain', DB::raw('count(*) as `subdomains`'))
+        ->groupBy('domain')
+        ->orderBy('domain')
+        ->get();
 
-      // Remove . and .. folders
-      unset($aFilterDomains[0]);
-      unset($aFilterDomains[1]);
-    }
-
-    // Filter domain list
-    foreach($domains as $key=>$domain)
-    {
-      // Filter out domains
-      if(Input::get('admin') === '1') {
-        // Show domains we DON'T have folders for
-        if(in_array($domain['domain'], $aFilterDomains))
-        {
-          unset($domains[$key]);
-          continue;
-        }
-      }
-      else
+      // Get filter domain list
+      if(App::environment('local'))
       {
-        // Show domains we DO have folders for
-        if(!in_array($domain['domain'], $aFilterDomains))
-        {
-          unset($domains[$key]);
-          continue;
-        }
+        $aFilterDomains = array(
+          'notbatman.com',
+          'defvayne23.com'
+        );
+      }
+      elseif(App::environment('production'))
+      {
+        $aFilterDomains = scandir('/var/www/');
+
+        // Remove . and .. folders
+        unset($aFilterDomains[0]);
+        unset($aFilterDomains[1]);
       }
 
-      // Get domain bandwidth in past 30 days
-      $bandwidth = Bandwidth::select(DB::raw('(sum(bytes_received)+sum(bytes_sent)) as total_bytes'))
-        ->whereHas('domain', function($q) use ($domain)
+      // Filter domain list
+      foreach($domains as $key=>$domain)
+      {
+        // Filter out domains
+        if(Input::get('admin') === '1') {
+          // Show domains we DON'T have folders for
+          if(in_array($domain['domain'], $aFilterDomains))
+          {
+            unset($domains[$key]);
+            continue;
+          }
+        }
+        else
         {
-          $q->where('domain', $domain['domain']);
-        })
-        ->where(DB::raw('date(request_time)'), '>=', DB::raw('date(now()-interval 30 day)'))
-        ->first();
+          // Show domains we DO have folders for
+          if(!in_array($domain['domain'], $aFilterDomains))
+          {
+            unset($domains[$key]);
+            continue;
+          }
+        }
 
-      $domains[$key]['bandwidth'] = (!empty($bandwidth))?$this->convertBytes($bandwidth->total_bytes):null;
+        // Get domain bandwidth in past 30 days
+        $bandwidth = Bandwidth::select(DB::raw('(sum(bytes_received)+sum(bytes_sent)) as total_bytes'))
+          ->whereHas('domain', function($q) use ($domain)
+          {
+            $q->where('domain', $domain['domain']);
+          })
+          ->where(DB::raw('date(request_time)'), '>=', DB::raw('date(now()-interval 30 day)'))
+          ->first();
+
+        $domains[$key]['bandwidth'] = (!empty($bandwidth))?$this->convertBytes($bandwidth->total_bytes):null;
+      }
+
+      $expiresAt = new DateTime();
+      $expiresAt = $expiresAt->modify('+1 Hour');
+      Cache::put($cache_key, $domains, $expiresAt);
     }
 
     $this->layout->content = View::make('domains.index', array('domains' => $domains));
@@ -74,57 +87,70 @@ class DomainsController extends BaseController {
   */
   public function domain($domain_name)
   {
-    $subdomains = Domain::where('domain', $domain_name)
-      ->orderBy('subdomain')
-      ->get();
+    $cache_key = "domains_domain_".$domain_name;
 
-    // Get filter domain list
-    if(App::environment('local'))
+    if(Cache::has($cache_key))
     {
-      $aFilterDomains = array(
-        '_',
-        'www'
-      );
+      $subdomains = Cache::get($cache_key);
     }
-    elseif(App::environment('production'))
+    else
     {
-      $aFilterDomains = scandir('/var/www/'.preg_replace('/[^A-Za-z0-9\-\_\.]/', '', $domain_name).'/');
+      $subdomains = Domain::where('domain', $domain_name)
+        ->orderBy('subdomain')
+        ->get();
 
-      // Remove . and .. folders
-      unset($aFilterDomains[0]);
-      unset($aFilterDomains[1]);
-    }
-
-    // Filter domain list
-    foreach($subdomains as $key=>$subdomain)
-    {
-      // Filter out domains
-      if(Input::get('admin') === '1') {
-        // Show domains we DON'T have folders for
-        if(in_array($subdomain['subdomain'], $aFilterDomains))
-        {
-          unset($subdomains[$key]);
-          continue;
-        }
-      }
-      else
+      // Get filter domain list
+      if(App::environment('local'))
       {
-        // Show domains we DO have folders for
-        if(!in_array($subdomain['subdomain'], $aFilterDomains))
-        {
-          unset($subdomains[$key]);
-          continue;
-        }
+        $aFilterDomains = array(
+          '_',
+          'www'
+        );
+      }
+      elseif(App::environment('production'))
+      {
+        $aFilterDomains = scandir('/var/www/'.preg_replace('/[^A-Za-z0-9\-\_\.]/', '', $domain_name).'/');
+
+        // Remove . and .. folders
+        unset($aFilterDomains[0]);
+        unset($aFilterDomains[1]);
       }
 
-      // Get subdomain bandwidth in past 30 days
-      $bandwidth = Bandwidth::select(DB::raw('(sum(bytes_received)+sum(bytes_sent)) as total_bytes'))
-        ->where('domain','=',$subdomain->id)
-        ->where(DB::raw('date(request_time)'), '>=', DB::raw('date(now()-interval 30 day)'))
-        ->groupBy('domain')
-        ->first();
+      // Filter domain list
+      foreach($subdomains as $key=>$subdomain)
+      {
+        // Filter out domains
+        if(Input::get('admin') === '1') {
+          // Show domains we DON'T have folders for
+          if(in_array($subdomain['subdomain'], $aFilterDomains))
+          {
+            unset($subdomains[$key]);
+            continue;
+          }
+        }
+        else
+        {
+          // Show domains we DO have folders for
+          if(!in_array($subdomain['subdomain'], $aFilterDomains))
+          {
+            unset($subdomains[$key]);
+            continue;
+          }
+        }
 
-      $subdomains[$key]['bandwidth'] = (!empty($bandwidth))?$this->convertBytes($bandwidth->total_bytes):null;
+        // Get subdomain bandwidth in past 30 days
+        $bandwidth = Bandwidth::select(DB::raw('(sum(bytes_received)+sum(bytes_sent)) as total_bytes'))
+          ->where('domain','=',$subdomain->id)
+          ->where(DB::raw('date(request_time)'), '>=', DB::raw('date(now()-interval 30 day)'))
+          ->groupBy('domain')
+          ->first();
+
+        $subdomains[$key]['bandwidth'] = (!empty($bandwidth))?$this->convertBytes($bandwidth->total_bytes):null;
+      }
+
+      $expiresAt = new DateTime();
+      $expiresAt = $expiresAt->modify('+1 Hour');
+      Cache::put($cache_key, $subdomains, $expiresAt);
     }
 
     $this->layout->content = View::make('domains.domain', array('domain_name' => $domain_name, 'subdomains' => $subdomains));
@@ -139,9 +165,22 @@ class DomainsController extends BaseController {
   */
   public function subdomain($domain_name, $subdomain_name)
   {
-    $subdomain = Domain::where('domain', $domain_name)
-      ->where('subdomain', $subdomain_name)
-      ->first();
+    $cache_key = "domains_subdomain_".$domain_name."_".$subdomain_name;
+
+    if(Cache::has($cache_key))
+    {
+      $subdomain = Cache::get($cache_key);
+    }
+    else
+    {
+      $subdomain = Domain::where('domain', $domain_name)
+        ->where('subdomain', $subdomain_name)
+        ->first();
+
+      $expiresAt = new DateTime();
+      $expiresAt = $expiresAt->modify('+1 Hour');
+      Cache::put($cache_key, $subdomain, $expiresAt);
+    }
 
     $this->layout->content = View::make('domains.subdomain', array('subdomain'=>$subdomain));
   }
