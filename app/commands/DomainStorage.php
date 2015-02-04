@@ -150,7 +150,7 @@ class DomainStorage extends Command {
 					'shared' => 0
 				];
 
-				$folders = scandir($path);
+				$folders = array_diff(scandir($path), array('..', '.'));
 				foreach($folders as $folder)
 				{
 					$bytes = $this->loopDirectory($path.'/'.$folder, ++$level);
@@ -173,7 +173,7 @@ class DomainStorage extends Command {
 				{
 					if(is_dir($path))
 					{
-						$folders = scandir($path);
+						$folders = array_diff(scandir($path), array('..', '.'));
 						foreach($folders as $folder)
 						{
 							$size = $this->loopDirectory($path.'/'.$folder, ++$level);
