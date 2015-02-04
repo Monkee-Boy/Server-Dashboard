@@ -134,6 +134,11 @@ class DomainStorage extends Command {
 	{
 		if(App::environment('local'))
 		{
+			if($this->option('output'))
+			{
+				$this->info('Output option set...');
+			}
+
 			$size = [
 				'total' => rand(8000,12000),
 				'current' => rand(2000,5000),
@@ -153,6 +158,11 @@ class DomainStorage extends Command {
 				$folders = array_diff(scandir($path), array('..', '.'));
 				foreach($folders as $folder)
 				{
+					if($this->option('output'))
+					{
+						$this->info('Going into folder ... '.$path.'/'.$folder);
+					}
+
 					$bytes = $this->loopDirectory($path.'/'.$folder, ++$level);
 
 					if($folder === 'current')
@@ -176,6 +186,11 @@ class DomainStorage extends Command {
 				{
 					if(is_dir($path))
 					{
+						if($this->option('output'))
+						{
+							$this->info('Going into folder ... '.$path.'/'.$folder);
+						}
+
 						$folders = array_diff(scandir($path), array('..', '.'));
 						foreach($folders as $folder)
 						{
@@ -185,12 +200,22 @@ class DomainStorage extends Command {
 					else
 					{
 						$size = filesize($path);
+
+						if($this->option('output'))
+						{
+							$this->info('Getting size of ... '.$path);
+						}
 					}
 				}
 				else
 				{
 					// This is counted somewhere else and shouldn't be double counted
 					$size = 0;
+
+					if($this->option('output'))
+					{
+						$this->error('Skipping symlink file/folder ... '.$path);
+					}
 				}
 			}
 		}
@@ -205,7 +230,10 @@ class DomainStorage extends Command {
 	 */
 	protected function getArguments()
 	{
-		return array();
+		return array(
+			array('domain', InputArgument::OPTIONAL, 'Name of the domain to run', false),
+			array('subdomain', InputArgument::OPTIONAL, 'Name of the subdomain to run', false),
+		);
 	}
 
 	/**
@@ -215,7 +243,9 @@ class DomainStorage extends Command {
 	 */
 	protected function getOptions()
 	{
-		return array();
+		return array(
+			array('output', null, InputOption::VALUE_NONE, 'Flag if output should be displayed'),
+		);
 	}
 
 }
