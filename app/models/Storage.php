@@ -9,7 +9,7 @@ class Storage extends Eloquent {
   */
   protected $table = 'storage';
 
-  protected $fillable = array('domain','size','files');
+  protected $fillable = array('domain','type','size');
 
   public function domain()
   {
