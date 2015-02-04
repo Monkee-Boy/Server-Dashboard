@@ -194,7 +194,7 @@ class DomainStorage extends Command {
 								$this->info('Going into folder ... '.$path.'/'.$folder);
 							}
 
-							$size = $this->loopDirectory($path.'/'.$folder, ++$level);
+							$size += $this->loopDirectory($path.'/'.$folder, ++$level);
 						}
 					}
 					else
@@ -203,7 +203,7 @@ class DomainStorage extends Command {
 
 						if($this->option('output'))
 						{
-							$this->info('Getting size of ... '.$path);
+							$this->info('Getting size of ... '.$path.' ('.$size.')');
 						}
 					}
 				}
