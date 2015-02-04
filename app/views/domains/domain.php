@@ -14,7 +14,7 @@
   <li class="current"><?= $domain_name ?></li>
 </ul>
 
-<ul class="tabs" data-tab>
+<ul class="tabs" data-tab data-options="deep_linking:true" data-options="scroll_to_content: false">
   <li class="tab-title active"><a href="#panel1">Over Time</a></li>
   <li class="tab-title"><a href="#panel2">Top</a></li>
   <li class="tab-title"><a href="#panel3">Subdomains</a></li>
