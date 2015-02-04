@@ -13,7 +13,7 @@ set :repo_url, 'git@github.com:Monkee-Boy/Server-Dashboard.git'
 # set :linked_files, fetch(:linked_files, []).push('config/database.yml')
 
 # Default value for linked_dirs is []
-set :linked_dirs, fetch(:linked_dirs, []).push('app/config/production', 'vendor', 'node_modules', 'public/bower_components')
+set :linked_dirs, fetch(:linked_dirs, []).push('app/config/production', 'app/storage/cache', 'vendor', 'node_modules', 'public/bower_components')
 
 namespace :deploy do
   STDOUT.sync
