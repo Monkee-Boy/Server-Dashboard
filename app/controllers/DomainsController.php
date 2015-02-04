@@ -69,6 +69,17 @@ class DomainsController extends BaseController {
           ->first();
 
         $domains[$key]['bandwidth'] = (!empty($bandwidth))?$this->convertBytes($bandwidth->total_bytes):null;
+
+        // Get domain total storage
+        $storage = Storage::select(DB::raw('sum(size) as total_storage'))
+          ->whereHas('domain', function($q) use ($domain)
+          {
+            $q->where('domain', $domain['domain']);
+          })
+          ->where('type', 'total')
+          ->first();
+
+        $domains[$key]['storage'] = (!empty($storage))?$this->convertBytes($storage->total_storage):null;
       }
 
       $expiresAt = new DateTime();
@@ -146,6 +157,14 @@ class DomainsController extends BaseController {
           ->first();
 
         $subdomains[$key]['bandwidth'] = (!empty($bandwidth))?$this->convertBytes($bandwidth->total_bytes):null;
+
+        // Get domain total storage
+        $storage = Storage::select('size')
+        ->where('domain','=',$subdomain->id)
+        ->where('type', 'total')
+        ->first();
+
+        $subdomains[$key]['storage'] = (!empty($storage))?$this->convertBytes($storage->size):null;
       }
 
       $expiresAt = new DateTime();

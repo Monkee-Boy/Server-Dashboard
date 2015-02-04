@@ -83,7 +83,7 @@
           <tr>
             <td><?= link_to_route('subdomain', $subdomain->subdomain, array('domain_name' =>$subdomain->domain, 'subdomain_name' => $subdomain->subdomain)); ?></td>
             <td><?= $subdomain->bandwidth ?></td>
-            <td></td>
+            <td><?= $subdomain->storage ?></td>
           </tr>
         <?php } ?>
       </tbody>

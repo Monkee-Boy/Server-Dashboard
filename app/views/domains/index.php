@@ -27,7 +27,7 @@
       <tr>
         <td><?= link_to_route('domain', $domain->domain, $domain->domain); ?></td>
         <td><?= $domain->bandwidth ?></td>
-        <td></td>
+        <td><?= $domain->storage ?></td>
       </tr>
     <?php } ?>
   </tbody>
