@@ -186,14 +186,14 @@ class DomainStorage extends Command {
 				{
 					if(is_dir($path))
 					{
-						if($this->option('output'))
-						{
-							$this->info('Going into folder ... '.$path.'/'.$folder);
-						}
-
 						$folders = array_diff(scandir($path), array('..', '.'));
 						foreach($folders as $folder)
 						{
+							if($this->option('output'))
+							{
+								$this->info('Going into folder ... '.$path.'/'.$folder);
+							}
+
 							$size = $this->loopDirectory($path.'/'.$folder, ++$level);
 						}
 					}
