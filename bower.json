@@ -4,7 +4,7 @@
   "dependencies": {
     "jquery": "2.1.3",
     "monkee-mixins": "latest",
-    "foundation": "latest",
+    "foundation": "5.5.1",
     "highstock": "highslide-software/highstock-release"
   }
 }
