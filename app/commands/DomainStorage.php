@@ -160,7 +160,7 @@ class DomainStorage extends Command {
 				{
 					if($this->option('output'))
 					{
-						$this->info('Going into folder ... '.$path.'/'.$folder);
+						$this->info('('.$level.') Going into folder ... '.$path.'/'.$folder);
 					}
 
 					$bytes = $this->loopDirectory($path.'/'.$folder, ++$level);
@@ -191,7 +191,7 @@ class DomainStorage extends Command {
 						{
 							if($this->option('output'))
 							{
-								$this->info('Going into folder ... '.$path.'/'.$folder);
+								$this->info('('.$level.') Going into folder ... '.$path.'/'.$folder);
 							}
 
 							$size += $this->loopDirectory($path.'/'.$folder, ++$level);
@@ -203,7 +203,7 @@ class DomainStorage extends Command {
 
 						if($this->option('output'))
 						{
-							$this->info('Getting size of ... '.$path.' ('.$size.')');
+							$this->info('('.$level.') Getting size of ... '.$path.' ('.$size.')');
 						}
 					}
 				}
@@ -214,7 +214,7 @@ class DomainStorage extends Command {
 
 					if($this->option('output'))
 					{
-						$this->error('Skipping symlink file/folder ... '.$path);
+						$this->error('('.$level.') Skipping symlink file/folder ... '.$path);
 					}
 				}
 			}
