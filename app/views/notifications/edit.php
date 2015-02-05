@@ -30,13 +30,14 @@
         <th>How</th>
         <th>By</th>
         <th>Notify</th>
+        <th>Hipchat</th>
       </tr>
     </thead>
 
     <tbody>
       <tr>
         <td><?= Form::select('what', array('bandwidth'=>'bandwidth','storage'=>'storage')) ?></td>
-        <td><?= Form::select('how', array('increase'=>'increase','decrease'=>'decrease','reach'=>'reach')) ?></td>
+        <td><?= Form::select('how', array('increases'=>'increases','decreases'=>'decreases','reaches'=>'reaches')) ?></td>
         <td>
           <div class="row">
             <div class="large-8 columns">
@@ -48,6 +49,7 @@
           </div>
         </td>
         <td><?= Form::text('where') ?></td>
+        <td><?= Form::checkbox('hipchat') ?></td>
       </tr>
     </tbody>
   </table>

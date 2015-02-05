@@ -34,8 +34,7 @@ class NotificationsController extends \BaseController {
 	public function store()
 	{
 		$rules = array(
-			'by' => 'required',
-			'where' => 'required'
+			'by' => 'required'
 		);
 
 		$validator = Validator::make(Input::all(), $rules);
@@ -48,6 +47,7 @@ class NotificationsController extends \BaseController {
 			$notification->by = Input::get('by');
 			$notification->by_measure = Input::get('by_measure');
 			$notification->where = Input::get('where');
+			$notification->hipchat = Input::get('hipchat');
 			$notification->save();
 			Session::flash('message', 'Successfully created notification!');
 			return Redirect::to('notifications');
@@ -77,8 +77,7 @@ class NotificationsController extends \BaseController {
 	public function update($id)
 	{
 		$rules = array(
-			'by' => 'required',
-			'where' => 'required'
+			'by' => 'required'
 		);
 
 		$validator = Validator::make(Input::all(), $rules);
@@ -91,6 +90,7 @@ class NotificationsController extends \BaseController {
 			$notification->by = Input::get('by');
 			$notification->by_measure = Input::get('by_measure');
 			$notification->where = Input::get('where');
+			$notification->hipchat = Input::get('hipchat');
 			$notification->save();
 			Session::flash('message', 'Successfully updated notification!');
 			return Redirect::to('notifications');

@@ -25,12 +25,14 @@
     <?php foreach($notifications as $notification) { ?>
       <tr>
         <td>
-          When <?php if($notification->how === 'reach') { echo 'server'; } else { echo 'domain'; } ?>
+          When <?php if($notification->how === 'reaches') { echo 'server'; } else { echo 'domain'; } ?>
           <code><?= $notification->what ?></code>
           <code><?= $notification->how ?></code>
-          <?php if($notification->how !== 'reach') { echo ' by '; } ?>
-          <code><?= $notification->by.$notification->by_measure ?></code><?php if($notification->how === 'reach') { echo ' remaining'; } ?>, notify
-          <code><?= $notification->where ?></code>
+          <?php if($notification->how !== 'reaches') { echo ' by '; } ?>
+          <code><?= $notification->by.$notification->by_measure ?></code>, notify
+          <?php if(!empty($notification->where)) { echo '<code>'.$notification->where.'</code>'; } ?>
+          <?php if(!empty($notification->where) && $notification->hipchat === 1) { echo ' and '; } ?>
+          <?php if($notification->hipchat === 1) { echo '<code>Hipchat</code>'; } ?>
         </td>
         <td>
           <?= Form::open(array('route' => array('notifications.destroy', $notification->id), 'method' => 'DELETE')); ?>

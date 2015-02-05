@@ -11,7 +11,7 @@ class Notification extends Eloquent {
   */
   protected $table = 'notifications';
 
-  protected $fillable = array('what','how', 'by', 'by_measure', 'where');
+  protected $fillable = array('what','how', 'by', 'by_measure', 'where', 'hipchat');
 
   protected $dates = ['deleted_at'];
 
