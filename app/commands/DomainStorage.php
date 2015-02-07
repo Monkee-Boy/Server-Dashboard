@@ -130,7 +130,7 @@ class DomainStorage extends Command {
 	 *
 	 * @return array
 	 */
-	protected function loopDirectory($path, $level = 0)
+	protected function loopDirectory($path, $level = 0, $forceLinked = false)
 	{
 		if(App::environment('local'))
 		{
@@ -152,6 +152,7 @@ class DomainStorage extends Command {
 				$size = [
 					'total' => 0,
 					'current' => 0,
+					'releases' => 0,
 					'shared' => 0
 				];
 
@@ -163,18 +164,29 @@ class DomainStorage extends Command {
 						$this->info('('.$level.') Going into folder ... '.$path.'/'.$folder);
 					}
 
-					$bytes = $this->loopDirectory($path.'/'.$folder, ++$level);
-
 					if($folder === 'current')
 					{
+						// Force loopDirectory to look into this linked directory
+						$bytes = $this->loopDirectory($path.'/'.$folder, ++$level, true);
 						$size['current'] += $bytes;
 					}
 					elseif($folder === 'shared')
 					{
+						$bytes = $this->loopDirectory($path.'/'.$folder, ++$level);
 						$size['shared'] += $bytes;
+						$size['total'] += $bytes;
 					}
-
-					$size['total'] += $bytes;
+					elseif($folder === 'releases')
+					{
+						$bytes = $this->loopDirectory($path.'/'.$folder, ++$level);
+						$size['releases'] += $bytes;
+						$size['total'] += $bytes;
+					}
+					else
+					{
+						$bytes = $this->loopDirectory($path.'/'.$folder, ++$level);
+						$size['total'] += $bytes;
+					}
 				}
 			}
 			else
@@ -182,7 +194,7 @@ class DomainStorage extends Command {
 				// Sets size if folder may be empty
 				$size = 0;
 
-				if(!is_link($path))
+				if(!is_link($path) || $forceLinked === true)
 				{
 					if(is_dir($path))
 					{
