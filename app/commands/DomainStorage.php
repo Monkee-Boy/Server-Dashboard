@@ -200,6 +200,10 @@ class DomainStorage extends Command {
 					{
 						// Get symlink path because symlink itself throws off is_dir and filesize
 						$path = readlink($path);
+						if($this->option('output'))
+						{
+							$this->warning('('.$level.') Changing path because original path is a symlink ... '.$path);
+						}
 					}
 
 					if(is_dir($path))
@@ -215,13 +219,20 @@ class DomainStorage extends Command {
 							$size += $this->loopDirectory($path.'/'.$folder, ++$level);
 						}
 					}
-					else
+					elseif(is_file($path))
 					{
 						$size = filesize($path);
 
 						if($this->option('output'))
 						{
 							$this->info('('.$level.') Getting size of ... '.$path.' ('.$size.')');
+						}
+					}
+					else
+					{
+						if($this->option('output'))
+						{
+							$this->error('('.$level.') This is neither directory or file ... '.$path);
 						}
 					}
 				}
