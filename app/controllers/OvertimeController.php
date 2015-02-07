@@ -8,10 +8,17 @@ class OvertimeController extends BaseController {
   public function bandwidth($domain_name, $subdomain_name = null)
   {
     $cache_key = 'overtime_bandwidth_'.$domain_name.'_'.$subdomain_name;
+    $aData = [
+      'chart' => null,
+      'cache' => false,
+      'stacked' => 'normal'
+    ];
 
     if (Cache::has($cache_key))
     {
-      $aData = Cache::get($cache_key);
+      $aChartData = Cache::get($cache_key);
+      $aData['chart'] = $aChartData;
+      $aData['cache'] = true;
     }
     else
     {
@@ -35,6 +42,8 @@ class OvertimeController extends BaseController {
       $aReceived = array(
         'name' => 'Received',
         'data' => array(),
+        'type' => 'column',
+        'stack' => 'bandwdith',
         'tooltip' => array(
           'valueDecimals' => 2,
           'valueSuffix' => ' KB'
@@ -43,6 +52,8 @@ class OvertimeController extends BaseController {
       $aSent = array(
         'name' => 'Sent',
         'data' => array(),
+        'type' => 'column',
+        'stack' => 'bandwdith',
         'tooltip' => array(
           'valueDecimals' => 2,
           'valueSuffix' => ' KB'
@@ -56,11 +67,12 @@ class OvertimeController extends BaseController {
         $aSent['data'][] = array((int)$date->format('U')*1000, (float)number_format($aRow['bytes_sent'] / 1024, 2));
       }
 
-      $aData = array($aReceived, $aSent);
+      $aChartData = array($aReceived, $aSent);
 
       $expiresAt = new DateTime();
       $expiresAt = $expiresAt->modify('+1 Hour');
-      Cache::put($cache_key, $aData, $expiresAt);
+      Cache::put($cache_key, $aChartData, $expiresAt);
+      $aData['chart'] = $aChartData;
     }
 
     return Response::json($aData, 200);
@@ -69,10 +81,17 @@ class OvertimeController extends BaseController {
   public function time_taken($domain_name, $subdomain_name = null)
   {
     $cache_key = 'overtime_timetaken_'.$domain_name.'_'.$subdomain_name;
+    $aData = [
+      'chart' => null,
+      'cache' => false,
+      'stacked' => null
+    ];
 
     if (Cache::has($cache_key))
     {
-      $aData = Cache::get($cache_key);
+      $aChartData = Cache::get($cache_key);
+      $aData['chart'] = $aChartData;
+      $aData['cache'] = true;
     }
     else
     {
@@ -108,11 +127,12 @@ class OvertimeController extends BaseController {
         $aAvg['data'][] = array((int)$date->format('U')*1000, (float)$aRow['avg_time_taken']/1000);
       }
 
-      $aData = array($aAvg);
+      $aChartData = array($aAvg);
 
       $expiresAt = new DateTime();
       $expiresAt = $expiresAt->modify('+1 Hour');
-      Cache::put($cache_key, $aData, $expiresAt);
+      Cache::put($cache_key, $aChartData, $expiresAt);
+      $aData['chart'] = $aChartData;
     }
 
     return Response::json($aData, 200);

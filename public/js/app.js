@@ -5,7 +5,6 @@
     chart.addClass('loading');
 
     $.getJSON(chart.data('chart-url'), function (data) {
-      console.log(chart.data('yaxis-title'));
       // Create the chart
       chart.highcharts('StockChart', {
         rangeSelector : {
@@ -24,10 +23,11 @@
         },
         plotOptions: {
           series: {
-            xDateFormat: '%A, %b %e'
+            xDateFormat: '%A, %b %e',
+            stacking: data.stacked
           }
         },
-        series : data
+        series : data.chart
       });
       chart.removeClass('loading');
     });

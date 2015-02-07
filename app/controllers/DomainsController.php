@@ -25,7 +25,8 @@ class DomainsController extends BaseController {
       {
         $aFilterDomains = array(
           'notbatman.com',
-          'defvayne23.com'
+          'defvayne23.com',
+          'abckitefestival.com'
         );
       }
       elseif(App::environment('production'))
