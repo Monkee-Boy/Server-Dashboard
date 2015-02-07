@@ -196,6 +196,12 @@ class DomainStorage extends Command {
 
 				if(!is_link($path) || $forceLinked === true)
 				{
+					if(is_link($path))
+					{
+						// Get symlink path because symlink itself throws off is_dir and filesize
+						$path = readlink($path);
+					}
+
 					if(is_dir($path))
 					{
 						$folders = array_diff(scandir($path), array('..', '.'));
