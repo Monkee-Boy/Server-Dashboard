@@ -38,9 +38,12 @@ class NotificationsController extends \BaseController {
 		);
 
 		$validator = Validator::make(Input::all(), $rules);
-		if ($validator->fails()) {
+		if ($validator->fails())
+		{
 			return Redirect::to('notifications.create')->withErrors($validator)->withInput(Input::all());
-		} else {
+		}
+		else
+		{
 			$notification = new Notification;
 			$notification->what = Input::get('what');
 			$notification->how = Input::get('how');
@@ -81,9 +84,12 @@ class NotificationsController extends \BaseController {
 		);
 
 		$validator = Validator::make(Input::all(), $rules);
-		if ($validator->fails()) {
+		if ($validator->fails())
+		{
 			return Redirect::to('notifications.edit', $id)->withErrors($validator)->withInput(Input::all());
-		} else {
+		}
+		else
+		{
 			$notification = Notification::find($id);
 			$notification->what = Input::get('what');
 			$notification->how = Input::get('how');

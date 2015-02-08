@@ -30,7 +30,8 @@ class TopController extends BaseController {
       ->orderBy('total', 'desc')
       ->limit(10);
 
-      if(!empty($subdomain_name)) {
+      if(!empty($subdomain_name))
+      {
         $oReferers = $oReferers->whereHas('domain', function($q) use ($subdomain_name)
         {
           $q->where('subdomain', $subdomain_name);
@@ -40,7 +41,8 @@ class TopController extends BaseController {
       $aReferers = $oReferers->get();
 
       $aChartData = [];
-      foreach($aReferers as $aRow) {
+      foreach($aReferers as $aRow)
+      {
         $aChartData[] = [$aRow['total'], $aRow['referer']];
       }
 
@@ -80,7 +82,8 @@ class TopController extends BaseController {
       ->orderBy('total', 'desc')
       ->limit(10);
 
-      if(!empty($subdomain_name)) {
+      if(!empty($subdomain_name))
+      {
         $oPages = $oPages->whereHas('domain', function($q) use ($subdomain_name)
         {
           $q->where('subdomain', $subdomain_name);
@@ -90,7 +93,8 @@ class TopController extends BaseController {
       $aPages = $oPages->get();
 
       $aChartData = [];
-      foreach($aPages as $aRow) {
+      foreach($aPages as $aRow)
+      {
         $aChartData[] = [$aRow['total'], $aRow['url']];
       }
 

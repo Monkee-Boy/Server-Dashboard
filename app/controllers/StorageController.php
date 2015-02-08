@@ -84,7 +84,8 @@ class StorageController extends BaseController {
       {
         $sTotal = $this->getStorageData('total', $aDomain);
 
-        if($sTotal > 0) {
+        if($sTotal > 0)
+        {
           $aStorage[] = [$aDomain->subdomain, (int)$sTotal];
         }
       }

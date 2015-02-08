@@ -30,7 +30,8 @@ class OvertimeController extends BaseController {
         ->groupBy(DB::raw('YEAR(request_time), MONTH(request_time), DAY(request_time)'))
         ->orderBy('request_time');
 
-      if(!empty($subdomain_name)) {
+      if(!empty($subdomain_name))
+      {
         $oBandwidth = $oBandwidth->whereHas('domain', function($q) use ($subdomain_name)
         {
           $q->where('subdomain', $subdomain_name);
@@ -60,7 +61,8 @@ class OvertimeController extends BaseController {
         )
       );
 
-      foreach($aBandwidth as $aRow) {
+      foreach($aBandwidth as $aRow)
+      {
         $date = new DateTime($aRow['request_time']);
 
         $aReceived['data'][] = array((int)$date->format('U')*1000, (float)number_format($aRow['bytes_received'] / 1024, 2));
@@ -103,7 +105,8 @@ class OvertimeController extends BaseController {
       ->groupBy(DB::raw('YEAR(request_time), MONTH(request_time), DAY(request_time)'))
       ->orderBy('request_time');
 
-      if(!empty($subdomain_name)) {
+      if(!empty($subdomain_name))
+      {
         $oRequest = $oRequest->whereHas('domain', function($q) use ($subdomain_name)
         {
           $q->where('subdomain', $subdomain_name);
@@ -121,7 +124,8 @@ class OvertimeController extends BaseController {
         )
       );
 
-      foreach($aRequest as $aRow) {
+      foreach($aRequest as $aRow)
+      {
         $date = new DateTime($aRow['request_time']);
 
         $aAvg['data'][] = array((int)$date->format('U')*1000, (float)$aRow['avg_time_taken']/1000);

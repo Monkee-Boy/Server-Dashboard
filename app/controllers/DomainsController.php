@@ -42,7 +42,8 @@ class DomainsController extends BaseController {
       foreach($domains as $key=>$domain)
       {
         // Filter out domains
-        if(Input::get('admin') === '1') {
+        if(Input::get('admin') === '1')
+        {
           // Show domains we DON'T have folders for
           if(in_array($domain['domain'], $aFilterDomains))
           {
@@ -132,7 +133,8 @@ class DomainsController extends BaseController {
       foreach($subdomains as $key=>$subdomain)
       {
         // Filter out domains
-        if(Input::get('admin') === '1') {
+        if(Input::get('admin') === '1')
+        {
           // Show domains we DON'T have folders for
           if(in_array($subdomain['subdomain'], $aFilterDomains))
           {
