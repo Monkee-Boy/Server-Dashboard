@@ -212,4 +212,12 @@
   });
 
   $(document).foundation();
+
+  $('.tabs').on('toggled', function (event, tab) {
+    tab.find('[class^=chart]').each(function() {
+      if($(this).highcharts()) {
+        $(this).highcharts().reflow();
+      }
+    });
+  });
 }(jQuery));

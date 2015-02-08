@@ -214,6 +214,10 @@
   $(document).foundation();
 
   $('.tabs').on('toggled', function (event, tab) {
-    $(window).resize();
+    tab.find('[class^=chart]').each(function() {
+      if($(this).highcharts()) {
+        $(this).highcharts().reflow();
+      }
+    });
   });
 }(jQuery));
