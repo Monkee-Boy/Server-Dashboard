@@ -181,4 +181,55 @@ class OvertimeController extends BaseController {
 
     return Response::json($aData, 200);
   }
+
+  public function top_domains()
+  {
+    $cache_key = 'overtime_top_domains';
+    $aData = [
+      'chart' => null,
+      'cache' => false,
+      'stacked' => null
+    ];
+
+    if (Cache::has($cache_key))
+    {
+      $aChartData = Cache::get($cache_key);
+      $aData['chart'] = $aChartData;
+      $aData['cache'] = true;
+    }
+    else
+    {
+      $aChartData = [];
+
+      $aBandwidth = Bandwidth::select('domain', DB::raw('(sum(bytes_received)+sum(bytes_sent)) as total_bytes'))
+      ->where(DB::raw('date(request_time)'), '>=', DB::raw('date(now()-interval 30 day)'))
+      ->groupBy('domain')
+      ->orderBy('total_bytes', 'desc')
+      ->limit(5)
+      ->get();
+
+      foreach($aBandwidth as $aDomain)
+      {
+        $domain = Domain::find($aDomain->domain);
+
+        if($domain->subdomain === '_')
+        {
+          $link = link_to_route('subdomain', $domain->domain, array('domain_name' =>$domain->domain, 'subdomain_name' => $domain->subdomain));
+        }
+        else
+        {
+          $link = link_to_route('subdomain', $domain->subdomain.'.'.$domain->domain, array('domain_name' =>$domain->domain, 'subdomain_name' => $domain->subdomain));
+        }
+
+        $aChartData[] = [$link, $this->convertBytes($aDomain->total_bytes)];
+      }
+
+      $expiresAt = new DateTime();
+      $expiresAt = $expiresAt->modify('+1 Hour');
+      Cache::put($cache_key, $aChartData, $expiresAt);
+      $aData['chart'] = $aChartData;
+    }
+
+    return Response::json($aData, 200);
+  }
 }

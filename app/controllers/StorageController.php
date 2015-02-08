@@ -115,10 +115,9 @@ class StorageController extends BaseController {
   }
 
   protected function getStorageData($type, $aDomain) {
-    $oStorage = Storage::select(DB::raw('sum(size) as size'))
+    return Storage::select(DB::raw('sum(size) as size'))
     ->where('type', '=' ,$type)
-    ->where('domain', '=', $aDomain->id);
-
-    return $oStorage->pluck('size');
+    ->where('domain', '=', $aDomain->id)
+    ->pluck('size');
   }
 }

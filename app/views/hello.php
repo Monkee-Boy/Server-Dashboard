@@ -37,6 +37,15 @@
 		</table>
 	</div>
 	<div class="large-6 columns">
-		
+		<h5>Top Bandwidth Users <span data-tooltip aria-haspopup="true" class="has-tip" title="Top 5 domains in the last 30 days.">?</span></h5>
+		<table class="chartTable" data-chart-url="<?= route('chart_top_domains') ?>" style="width: 100%;">
+			<thead>
+				<tr>
+					<th>Domain</th>
+					<th>Bandwidth</th>
+				</tr>
+			</thead>
+			<tbody></tbody>
+		</table>
 	</div>
 </div>
