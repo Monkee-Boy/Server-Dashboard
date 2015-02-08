@@ -83,7 +83,10 @@ class StorageController extends BaseController {
       foreach($aDomains as $aDomain)
       {
         $sTotal = $this->getStorageData('total', $aDomain);
-        $aStorage[] = [$aDomain->subdomain, (int)$sTotal];
+
+        if($sTotal > 0) {
+          $aStorage[] = [$aDomain->subdomain, (int)$sTotal];
+        }
       }
 
       usort($aStorage, function($a, $b) {
