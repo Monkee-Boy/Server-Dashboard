@@ -20,6 +20,7 @@ class TopController extends BaseController {
     else
     {
       $oReferers = Bandwidth::select(DB::raw('count(*) as total'), 'referer')
+      ->where('referer', 'NOT REGEXP', DB::raw("'^http[s]*:\/\/[\.a-z_\-]+".str_replace(".","\.",$domain_name)."'"))
       ->whereHas('domain', function($q) use ($domain_name)
       {
         $q->where('domain', $domain_name);
