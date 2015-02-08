@@ -67,6 +67,7 @@ Route::group(['before' => 'auth'], function()
     Route::group(['prefix' => 'storage'], function()
     {
       Route::get('total/{domain_name}/{subdomain_name}', ['as'=>'chart_storage_total', 'uses'=>'StorageController@total']);
+      Route::get('domain/{domain_name}', ['as'=>'chart_storage_domain', 'uses'=>'StorageController@domain']);
     });
   });
 });
