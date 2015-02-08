@@ -33,6 +33,74 @@
     });
   });
 
+  // Pie Charts
+  // Make monochrome colors and set them as default for all pies
+  Highcharts.getOptions().plotOptions.pie.colors = (function () {
+    var colors = [],
+    base = Highcharts.getOptions().colors[0],
+    i;
+
+    for (i = 0; i < 10; i += 1) {
+      // Start out with a darkened base color (negative brighten), and end
+      // up with a much brighter color
+      colors.push(Highcharts.Color(base).brighten((i - 3) / 7).get());
+    }
+    return colors;
+  }());
+  $('.chartPie').each(function() {
+    var chart = $(this);
+    chart.addClass('loading');
+
+    $.getJSON(chart.data('chart-url'), function (data) {
+      // Create the chart
+      chart.highcharts({
+        chart: {
+          type: 'pie',
+          plotBackgroundColor: null,
+          plotBorderWidth: null,
+          plotShadow: false
+        },
+        title: {
+          text: chart.data('chart-title')
+        },
+        tooltip: {
+          formatter: function() {
+            if(chart.data('chart-type')) {
+              var size = this.point.y;
+
+              if(size >= 1099511627776) {
+                size = Highcharts.numberFormat(size/1099511627776,2)+' TB';
+              } else if(size >= 1073741824) {
+                size = Highcharts.numberFormat(size/1073741824,2)+' GB';
+              } else if(size >= 1048576) {
+                size = Highcharts.numberFormat(size/1048576,2)+' MB';
+              } else if(size >= 1024) {
+                size = Highcharts.numberFormat(size/1024,2)+' KB';
+              } else if(size > 0) {
+                size = size+' B';
+              }
+
+              return this.point.name+': <b>'+size+'</b>';
+            }
+          }
+        },
+        plotOptions: {
+          pie: {
+            allowPointSelect: true,
+            cursor: 'pointer',
+            dataLabels: {
+              enabled: true,
+              format: '<b>{point.name}</b>: {point.percentage:.1f} %'
+            },
+            showInLegend: false
+          }
+        },
+        series: data.chart
+      });
+      chart.removeClass('loading');
+    });
+  });
+
   // Guage
   var gaugeOptions = {
     chart: { type: 'solidgauge' },
@@ -144,4 +212,8 @@
   });
 
   $(document).foundation();
+
+  $('.tabs').on('toggled', function (event, tab) {
+    $(window).resize();
+  });
 }(jQuery));

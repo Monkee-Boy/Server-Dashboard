@@ -142,6 +142,7 @@ class DomainStorage extends Command {
 			$size = [
 				'total' => rand(8000,12000),
 				'current' => rand(2000,5000),
+				'releases' => rand(2000,5000),
 				'shared' => rand(2000,5000)
 			];
 		}
@@ -199,10 +200,11 @@ class DomainStorage extends Command {
 					if(is_link($path))
 					{
 						// Get symlink path because symlink itself throws off is_dir and filesize
+						$original_path = $path;
 						$path = readlink($path);
 						if($this->option('output'))
 						{
-							$this->warning('('.$level.') Changing path because original path is a symlink ... '.$path);
+							$this->error('('.$level.') Changing path because original path is a symlink ... '.$original_path.' -> '.$path);
 						}
 					}
 
@@ -230,6 +232,8 @@ class DomainStorage extends Command {
 					}
 					else
 					{
+						$size = 0;
+						
 						if($this->option('output'))
 						{
 							$this->error('('.$level.') This is neither directory or file ... '.$path);

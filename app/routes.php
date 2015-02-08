@@ -62,6 +62,12 @@ Route::group(['before' => 'auth'], function()
       Route::get('referers/{domain_name}/{subdomain_name?}', ['as'=>'chart_top_referers', 'uses'=>'TopController@referers']);
       Route::get('pages/{domain_name}/{subdomain_name?}', ['as'=>'chart_top_pages', 'uses'=>'TopController@pages']);
     });
+
+    ## Storage
+    Route::group(['prefix' => 'storage'], function()
+    {
+      Route::get('total/{domain_name}/{subdomain_name}', ['as'=>'chart_storage_total', 'uses'=>'StorageController@total']);
+    });
   });
 });
 
