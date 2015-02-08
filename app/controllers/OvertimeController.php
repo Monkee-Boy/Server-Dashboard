@@ -141,4 +141,44 @@ class OvertimeController extends BaseController {
 
     return Response::json($aData, 200);
   }
+
+  public function month_breakdown()
+  {
+    $cache_key = 'overtime_month_breakdown';
+    $aData = [
+      'chart' => null,
+      'cache' => false,
+      'stacked' => null
+    ];
+
+    if (Cache::has($cache_key))
+    {
+      $aChartData = Cache::get($cache_key);
+      $aData['chart'] = $aChartData;
+      $aData['cache'] = true;
+    }
+    else
+    {
+      $aChartData = [];
+
+      $aBandwidth = Bandwidth::select('request_time', DB::raw('(sum(bytes_received)+sum(bytes_sent)) as total_bytes'))
+        ->groupBy(DB::raw('YEAR(request_time), MONTH(request_time)'))
+        ->orderBy('request_time', 'desc')
+        ->limit(3)
+        ->get();
+
+      foreach($aBandwidth as $aMonth)
+      {
+        $date = new DateTime($aMonth->request_time);
+        $aChartData[] = [$date->format('F'), $this->convertBytes($aMonth->total_bytes)];
+      }
+
+      $expiresAt = new DateTime();
+      $expiresAt = $expiresAt->modify('+1 Hour');
+      Cache::put($cache_key, $aChartData, $expiresAt);
+      $aData['chart'] = $aChartData;
+    }
+
+    return Response::json($aData, 200);
+  }
 }

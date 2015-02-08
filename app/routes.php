@@ -54,6 +54,7 @@ Route::group(['before' => 'auth'], function()
     {
       Route::get('bandwidth/{domain_name}/{subdomain_name?}', ['as'=>'chart_bandwidth_domain', 'uses'=>'OvertimeController@bandwidth']);
       Route::get('time_taken/{domain_name}/{subdomain_name?}', ['as'=>'chart_time_domain', 'uses'=>'OvertimeController@time_taken']);
+      Route::get('month_breakdown', ['as'=>'chart_month_breakdown', 'uses'=>'OvertimeController@month_breakdown']);
     });
 
     ## Top
