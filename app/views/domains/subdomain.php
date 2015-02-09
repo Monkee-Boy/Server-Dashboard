@@ -1,6 +1,6 @@
 <div class="row">
   <div class="large-8 columns">
-    <h1><?= $subdomain->subdomain . '.' . $subdomain->domain ?></h1>
+    <h1><?= (($subdomain->subdomain === '_')?'':$subdomain->subdomain . '.') . $subdomain->domain ?></h1>
   </div>
 
   <div class="large-4 columns">
