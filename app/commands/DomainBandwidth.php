@@ -80,6 +80,7 @@ class DomainBandwidth extends Command {
 
 		$aData = explode("\n", $sData);
 		$sInserted = 0;
+		$aDomains = array();
 
 		foreach($aData as $sRow)
 		{
@@ -93,7 +94,7 @@ class DomainBandwidth extends Command {
 			$aRow = $this->array_fill_keys($aKeys, $aRow);
 
 			// Ignore dummy connection
-			if($aRow['host'] !== '-')
+			if($aRow['host'] !== '-' && !empty($aRow['host']))
 			{
 				// Data cleanup
 				$aRow['file_name'] = substr($aRow['file_name'], 1, -1);
@@ -103,51 +104,61 @@ class DomainBandwidth extends Command {
 				$aRow['url'] = substr($aRow['url'], 1, -1);
 
 				// Build domain and subdomain
-				if($aRow['host'] === '198.58.101.143')
+				if(!in_array($aRow['host'], $aDomains))
 				{
-					$sDomain = '198.58.101.143';
-					$sSubDomain = "_";
-				}
-				else
-				{
-					$aDomain = explode(':', $aRow['host']);
-					$aDomain = explode('.', $aDomain[0]);
-					if(count($aDomain) > 1)
+					if($aRow['host'] === '198.58.101.143')
 					{
-						$aDomain = array_reverse($aDomain);
-						$sDomain = $aDomain[1].'.'.$aDomain[0];
-
-						if(count($aDomain) > 2)
+						$sDomain = '198.58.101.143';
+						$sSubDomain = "_";
+					}
+					else
+					{
+						$aDomain = explode(':', $aRow['host']);
+						$aDomain = explode('.', $aDomain[0]);
+						if(count($aDomain) > 1)
 						{
-							$sSubDomain = $aDomain[2];
-							for($i=3;$i<count($aDomain);$i++)
+							$aDomain = array_reverse($aDomain);
+							$sDomain = $aDomain[1].'.'.$aDomain[0];
+
+							if(count($aDomain) > 2)
 							{
-								$sSubDomain = $aDomain[$i].".".$sSubDomain;
+								$sSubDomain = $aDomain[2];
+								for($i=3;$i<count($aDomain);$i++)
+								{
+									$sSubDomain = $aDomain[$i].".".$sSubDomain;
+								}
+							}
+							else
+							{
+								$sSubDomain = "_";
 							}
 						}
 						else
 						{
+							$sDomain = $aRow['host'];
 							$sSubDomain = "_";
 						}
 					}
-					else
-					{
-						$sDomain = $aRow['host'];
-						$sSubDomain = "_";
-					}
-				}
 
-				// Find domain id, if not create it
-				$domain = Domain::firstOrCreate(array(
-					'domain' => $sDomain,
-					'subdomain' => $sSubDomain
-				));
+					// Find domain id, if not create it
+					$domain = Domain::firstOrCreate(array(
+						'domain' => $sDomain,
+						'subdomain' => $sSubDomain
+					));
+					$domain = $domain->id;
+
+					$aDomains[$domain] = $aRow['host'];
+				}
+				else
+				{
+					$domain = array_search($aRow['host'], $aDomains);
+				}
 
 				if(App::environment('local'))
 				{
 					// Show data on local for debugging
 					echo "\n";
-					echo $domain->id."\n";
+					echo $domain."\n";
 					echo $sDomain."\n";
 					echo $sSubDomain."\n";
 					print_r($aRow);
@@ -156,7 +167,7 @@ class DomainBandwidth extends Command {
 
 				// Now insert data into bandwidth table
 				Bandwidth::create(array(
-					'domain' => $domain->id,
+					'domain' => $domain,
 					'ip' => $aRow['ip'],
 					'request_time' => $aRow['timestamp'],
 					'time_taken' => $aRow['time_taken'],
@@ -210,7 +221,14 @@ class DomainBandwidth extends Command {
 		{
 			foreach($target as $key => $val)
 			{
-				$filledArray[$val] = is_array($value) ? $value[$key] : $value;
+				if(isset($value[$key]))
+				{
+					$filledArray[$val] = is_array($value) ? $value[$key] : $value;
+				}
+				else
+				{
+					$filledArray[$val] = null;
+				}
 			}
 		}
 		return $filledArray;
