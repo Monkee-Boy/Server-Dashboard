@@ -47,7 +47,7 @@ class OvertimeController extends BaseController {
         'stack' => 'bandwdith',
         'tooltip' => array(
           'valueDecimals' => 2,
-          'valueSuffix' => ' KB'
+          'valueSuffix' => ' MB'
         )
       );
       $aSent = array(
@@ -57,7 +57,7 @@ class OvertimeController extends BaseController {
         'stack' => 'bandwdith',
         'tooltip' => array(
           'valueDecimals' => 2,
-          'valueSuffix' => ' KB'
+          'valueSuffix' => ' MB'
         )
       );
 
@@ -65,8 +65,8 @@ class OvertimeController extends BaseController {
       {
         $date = new DateTime($aRow['request_time']);
 
-        $aReceived['data'][] = array((int)$date->format('U')*1000, (float)number_format($aRow['bytes_received'] / 1024, 2));
-        $aSent['data'][] = array((int)$date->format('U')*1000, (float)number_format($aRow['bytes_sent'] / 1024, 2));
+        $aReceived['data'][] = array((int)$date->format('U')*1000, (float)round($aRow['bytes_received'] / 1048576, 2));
+        $aSent['data'][] = array((int)$date->format('U')*1000, (float)round($aRow['bytes_sent'] / 1048576, 2));
       }
 
       $aChartData = array($aReceived, $aSent);
