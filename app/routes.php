@@ -41,6 +41,13 @@ Route::group(['before' => 'auth'], function()
   # Get chart data
   Route::group(array('prefix' => 'charts'), function()
   {
+    ## Sum
+    Route::group(array('prefix' => 'sum'), function()
+    {
+      Route::get('bandwidth/{domain_name}/{subdomain_name?}', ['as'=>'chart_sum_bandwidth','uses'=>'SumController@bandwidth']);
+      Route::get('storage/{domain_name}/{subdomain_name?}', ['as'=>'chart_sum_storage','uses'=>'SumController@storage']);
+    });
+
     ## Linode
     Route::group(array('prefix' => 'linode'), function()
     {

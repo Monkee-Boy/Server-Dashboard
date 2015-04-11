@@ -28,7 +28,8 @@
   <div class="content active" id="panel1">
     <div class="row">
       <div class="large-6 columns">
-        <!-- TODO: Show bandwidth this month and last -->
+        <div class="chartText current_bandwidth" width="100%" height="400px" data-chart-url="<?= route('chart_sum_bandwidth', array('domain_name'=>$subdomain->domain, 'subdomain_name'=>$subdomain->subdomain)) ?>" data-chart-title="Total Bandwidth"></div>
+
         <h5>Top Referers <span data-tooltip aria-haspopup="true" class="has-tip" title="Top 10 referers in the last 30 days.">?</span></h5>
         <table class="chartTable" data-chart-url="<?= route('chart_top_referers', array('domain_name'=>$subdomain->domain, 'subdomain_name'=>$subdomain->subdomain)) ?>" style="width: 100%;">
           <thead>
@@ -42,7 +43,8 @@
       </div> <!-- /.large-6.columns -->
 
       <div class="large-6 columns">
-        <!-- TODO: Show total storage -->
+        <div class="chartText current_bandwidth" width="100%" height="400px" data-chart-url="<?= route('chart_sum_storage', array('domain_name'=>$subdomain->domain, 'subdomain_name'=>$subdomain->subdomain)) ?>" data-chart-title="Total Storage"></div>
+
         <h5>Top Pages <span data-tooltip aria-haspopup="true" class="has-tip" title="Top 10 pages requested in the last 30 days.">?</span></h5>
         <table class="chartTable" data-chart-url="<?= route('chart_top_pages', array('domain_name'=>$subdomain->domain, 'subdomain_name'=>$subdomain->subdomain)) ?>" style="width: 100%;">
           <thead>

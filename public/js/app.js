@@ -192,6 +192,18 @@
     });
   });
 
+  $('.chartText').each(function() {
+    var chart = $(this);
+    chart.addClass('loading');
+
+    $.getJSON(chart.data('chart-url'), function (data) {
+      var dom = $('<h5>'+chart.data('chart-title')+'</h5><div class="chart-text">'+data.chart+'</div>');
+      chart.append(dom);
+
+      chart.removeClass('loading');
+    });
+  });
+
   $('.chartTable').each(function() {
     var chart = $(this);
     chart.parent().addClass('loading');

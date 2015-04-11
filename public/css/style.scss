@@ -24,6 +24,44 @@
   margin-bottom: 10px;
 }
 
+.chartText {
+  @include clearfix;
+  margin-bottom: 10px;
+
+  &.current_bandwidth {
+    font-size: 50px;
+
+    .chart-text {
+      text-align: center;
+    }
+
+    .title {
+      font-weight: 700;
+      font-size: 0.4em;
+    }
+
+    .size span {
+      font-size: 0.6em;
+    }
+
+    .previous {
+      font-size: 0.6em;
+    }
+  }
+
+  &.current_storage {
+    font-size: 50px;
+
+    .chart-text {
+      text-align: center;
+    }
+
+    span {
+      font-size: 0.6em;
+    }
+  }
+}
+
 .loading {
   position: relative;
   &:before {
