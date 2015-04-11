@@ -8161,12 +8161,14 @@ th.hide-for-touch {
   clear: both;
 }
 .chartText.current_bandwidth {
+  height: 160px;
   font-size: 50px;
 }
 .chartText.current_bandwidth .chart-text {
   text-align: center;
 }
 .chartText.current_bandwidth .title {
+  padding-right: 15px;
   font-weight: 700;
   font-size: 0.4em;
 }
@@ -8177,6 +8179,7 @@ th.hide-for-touch {
   font-size: 0.6em;
 }
 .chartText.current_storage {
+  height: 160px;
   font-size: 50px;
 }
 .chartText.current_storage .chart-text {

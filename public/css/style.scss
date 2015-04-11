@@ -29,6 +29,7 @@
   margin-bottom: 10px;
 
   &.current_bandwidth {
+    height: 160px;
     font-size: 50px;
 
     .chart-text {
@@ -36,6 +37,7 @@
     }
 
     .title {
+      padding-right: 15px;
       font-weight: 700;
       font-size: 0.4em;
     }
@@ -50,6 +52,7 @@
   }
 
   &.current_storage {
+    height: 160px;
     font-size: 50px;
 
     .chart-text {
